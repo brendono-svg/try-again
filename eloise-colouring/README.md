@@ -2,7 +2,7 @@
 
 A colouring app for a three-year-old, made to run on a phone. It's a single self-contained `index.html` with no installs and no internet needed after it loads (only the Fredoka font is fetched from Google Fonts).
 
-This is a rebuild of the earlier "Eloise's App". The 34 original pictures, the magic paints and the stickers carry over. Ten new pictures are added: Flower, Sun, Boat, Hot air balloon, plus a Kiwi, Sheep, Tūī, Beach, Pavlova and Christmas tree.
+This is version 3.0, a rebuild of the earlier "Eloise's App". The 34 original pictures, the magic paints and the stickers carry over. Ten new pictures are added: Flower, Sun, Boat, Hot air balloon, plus a Kiwi, Sheep, Tūī, Beach, Pavlova and Christmas tree.
 
 ## What's new for Eloise
 - **Home screen of big picture cards**, sorted into Animals, Party, Go!, Outside and Mine. There's also a **Surprise!** card (a new random picture each time) and a **blank page** for free drawing.
@@ -28,5 +28,18 @@ This is a rebuild of the earlier "Eloise's App". The 34 original pictures, the m
 
 Pictures and stars are kept in this browser's local storage on this phone.
 
-## Using it on a phone
-Open `index.html` in the phone's browser (for example from GitHub Pages), then use **Add to Home screen** so it opens like an app.
+## Installing it on a phone like a real app
+This folder is a complete installable web app. It has an app icon and a home-screen name, opens full screen with no browser bars, and keeps working with no internet after the first visit.
+
+1. Publish it with GitHub Pages: in the repository go to **Settings → Pages**, choose **Deploy from a branch**, pick the branch that has this folder, and use the `/ (root)` folder. After a minute it's live at `https://brendono-svg.github.io/try-again/eloise-colouring/`.
+2. Open that address on the phone.
+   - **Android (Chrome):** menu ⋮ → **Install app** (or **Add to Home screen**).
+   - **iPhone (Safari):** Share → **Add to Home Screen**.
+3. Open it from the new **Colouring** icon.
+
+Updates you publish are picked up the next time the app opens with internet.
+
+## Files
+- `index.html`: the whole app
+- `manifest.webmanifest`, `icon-*.png`, `apple-touch-icon.png`, `favicon-48.png`, `icon.svg`: app name and icons
+- `sw.js`: offline support

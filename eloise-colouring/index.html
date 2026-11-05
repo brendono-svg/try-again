@@ -1,10 +1,22 @@
 <!doctype html>
-<html lang="en-NZ"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"></head><body>
+<html lang="en-NZ"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="description" content="A talking, tap-to-colour app for a three-year-old.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Colouring">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));</script>
+</head><body>
 <title>Eloise's Colouring</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#BFE3FF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
 <style>
 /* Layout: a picture-book sky. Home = big picture cards to choose from; Colour = a white page in a coloured frame,
@@ -128,7 +140,7 @@ button{font-family:inherit;color:inherit}
 .tools .btn svg{width:70%;height:70%}
 
 .tray{background:var(--tray);border:3px solid var(--ink);border-radius:24px;padding:8px;box-shadow:0 5px 0 var(--ink-soft);display:flex;flex-direction:column;gap:8px;
-  --b:clamp(38px, calc((100vw - 32px - 22px - 6 * 7px) / 7), 54px)}
+  --b:clamp(36px, calc((100vw - 32px - 22px - 12px - 6 * 7px) / 7), 54px)}
 .trayhead{display:flex;align-items:center;gap:8px}
 .tabs{display:flex;gap:8px;flex:1}
 .tab{flex:1;height:40px;border:3px solid var(--ink);border-radius:999px;background:var(--sky-hi);display:grid;place-items:center;cursor:pointer;padding:0;transition:transform .1s}
@@ -139,7 +151,7 @@ button{font-family:inherit;color:inherit}
 .size{width:44px;height:40px;border:3px solid var(--ink);border-radius:14px;background:var(--sky-hi);display:grid;place-items:center;cursor:pointer;padding:0}
 .size i{display:block;border-radius:50%;background:var(--ink)}
 .size[aria-pressed="true"]{background:var(--ink)} .size[aria-pressed="true"] i{background:#fff}
-.pots{display:grid;grid-template-columns:repeat(7,var(--b));gap:8px 7px;justify-content:center}
+.pots{display:grid;grid-template-columns:repeat(7,var(--b));gap:8px 7px;justify-content:center;padding:4px 6px}
 .pot{width:var(--b);height:var(--b);box-sizing:border-box;padding:0;cursor:pointer;border:3px solid rgba(36,48,79,.3);position:relative;
   border-radius:52% 48% 55% 45% / 48% 55% 45% 52%;
   background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.85) 0 11%, rgba(255,255,255,0) 12.5%), var(--c, #fff);
@@ -153,6 +165,20 @@ button{font-family:inherit;color:inherit}
 .pot.stamp{background:var(--paper);border-radius:16px!important}
 .pot.stamp canvas{position:absolute;inset:0;width:100%;height:100%}
 
+/* screen changes, thumbnails, first-run tip */
+.view.enter{animation:enter .28s cubic-bezier(.2,1,.4,1)}
+@keyframes enter{from{opacity:0;transform:translateY(14px) scale(.985)}}
+.card img{-webkit-user-drag:none;pointer-events:none}
+.card img:not([src]){background:linear-gradient(100deg,#F2F7FD 30%,#E2EDFA 50%,#F2F7FD 70%) 0 0/250% 100%;animation:shimmer 1.3s linear infinite}
+@keyframes shimmer{to{background-position:-150% 0}}
+.tip{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.92);border:2px solid var(--ink);border-radius:18px;padding:10px 10px 10px 12px;
+  font:500 14px/1.35 system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink)}
+.tip svg{width:28px;height:28px;flex:none;color:var(--ink)}
+.tip span{flex:1;min-width:0}
+.tip button{flex:none;font:600 14px system-ui,-apple-system,sans-serif;padding:8px 12px;border-radius:12px;border:2px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+.panel-head{position:sticky;top:-16px;z-index:1;background:var(--paper);margin:-16px -16px 0;padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #E4E9F2}
+.about{display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid #E4E9F2;font-size:.82rem;opacity:.75}
+.about svg{width:32px;height:32px;flex:none}
 /* parent area */
 .sheet{position:fixed;inset:0;z-index:30;background:rgba(36,48,79,.55);display:grid;place-items:center;animation:fade .2s;
   padding:max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
@@ -226,8 +252,10 @@ label.pbtn{flex:none;display:inline-block}
   <header class="home-head">
     <h1 id="title" aria-label="Eloise's Colouring"></h1>
     <div class="stars" aria-label="Pictures finished"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l4.1 8.6 9.4 1.2-6.9 6.5 1.8 9.3L16 23.6l-8.4 4.5 1.8-9.3-6.9-6.5 9.4-1.2z" fill="#FFD23F" stroke="#24304F" stroke-width="2.4" stroke-linejoin="round"/></svg><b id="starCount">0</b></div>
-    <button class="btn gear" id="gearHome" aria-label="Grown-ups: press and hold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
+    <button class="btn gear" id="gearHome" aria-label="Grown-ups: press and hold"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(0 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(45 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(90 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(135 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(180 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(225 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(270 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(315 12 12)"/><circle cx="12" cy="12" r="7"/></g><circle cx="12" cy="12" r="2.8" fill="#fff"/></svg></button>
   </header>
+
+  <div class="tip" id="tip" hidden role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(0 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(45 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(90 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(135 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(180 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(225 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(270 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(315 12 12)"/><circle cx="12" cy="12" r="7"/></g><circle cx="12" cy="12" r="2.8" fill="#fff"/></svg><span>Grown-ups: press and hold the gear for 1.5 seconds to turn on sound and talking, set a time limit or make a page from a photo.</span><button id="tipOk">Got it</button></div>
 
   <button class="resume" id="resume" hidden aria-label="Keep colouring my last picture"><img id="resumeImg" alt=""><span>Keep colouring</span><span class="go"><svg viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#fff"/></svg></span></button>
 
@@ -248,7 +276,7 @@ label.pbtn{flex:none;display:inline-block}
     <div class="meter" aria-hidden="true" id="meter"><i id="meterFill"></i><b><svg viewBox="0 0 32 32"><path d="M16 2.5l4.1 8.6 9.4 1.2-6.9 6.5 1.8 9.3L16 23.6l-8.4 4.5 1.8-9.3-6.9-6.5 9.4-1.2z" fill="#FFD23F" stroke="#24304F" stroke-width="2.6" stroke-linejoin="round"/></svg></b></div>
     <button class="btn" id="undo" aria-label="Undo" disabled><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 7L4 13l6 6"/><path d="M4 13h14a8 8 0 010 16h-4"/></svg></button>
     <button class="btn" id="wipe" aria-label="Clear the picture: press and hold"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5l9 9-11 11H9l-4-4z"/><path d="M12 11l9 9"/><path d="M16 27h11"/></svg></button>
-    <button class="btn gear" id="gearPaint" aria-label="Grown-ups: press and hold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
+    <button class="btn gear" id="gearPaint" aria-label="Grown-ups: press and hold"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(0 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(45 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(90 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(135 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(180 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(225 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(270 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(315 12 12)"/><circle cx="12" cy="12" r="7"/></g><circle cx="12" cy="12" r="2.8" fill="#fff"/></svg></button>
   </div>
 
   <div class="stage" id="stage">
@@ -285,7 +313,7 @@ label.pbtn{flex:none;display:inline-block}
 
 <!-- ================= GROWN-UPS ================= -->
 <div id="sleepy" hidden role="status">
-  <button class="btn gear" id="gearSleepy" aria-label="Grown-ups: press and hold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
+  <button class="btn gear" id="gearSleepy" aria-label="Grown-ups: press and hold"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(0 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(45 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(90 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(135 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(180 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(225 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(270 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(315 12 12)"/><circle cx="12" cy="12" r="7"/></g><circle cx="12" cy="12" r="2.8" fill="#fff"/></svg></button>
   <i class="dot" style="left:12%;top:18%"></i><i class="dot" style="left:82%;top:14%;animation-delay:.6s"></i><i class="dot" style="left:70%;top:72%;animation-delay:1.2s"></i><i class="dot" style="left:20%;top:78%;animation-delay:1.8s"></i><i class="dot" style="left:48%;top:9%;animation-delay:.9s"></i>
   <div style="position:relative"><svg class="moon" viewBox="0 0 120 120" aria-hidden="true"><path d="M78 10A52 52 0 1 0 110 84 42 42 0 0 1 78 10z" fill="#FFE27A" stroke="#24304F" stroke-width="4" stroke-linejoin="round"/><g transform="translate(-18,-2)"><path d="M38 62q6 5 12 0M62 74q6 5 12 0" fill="none" stroke="#24304F" stroke-width="4" stroke-linecap="round"/><path d="M48 88q8 6 16 0" fill="none" stroke="#24304F" stroke-width="4" stroke-linecap="round"/><circle cx="38" cy="78" r="5" fill="#FF9FB5"/><circle cx="72" cy="90" r="5" fill="#FF9FB5"/></g></svg>
   <b class="z" style="right:-6px;top:6px;font-size:1.6rem">z</b><b class="z" style="right:-26px;top:-18px;font-size:2.2rem;animation-delay:1s">z</b></div>
@@ -294,7 +322,7 @@ label.pbtn{flex:none;display:inline-block}
 </div>
 <div class="sheet" id="parent" hidden>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle">
-    <div style="display:flex;align-items:center;gap:12px"><h2 id="pTitle">Grown-ups</h2><button class="pbtn primary" id="pClose">Done</button></div>
+    <div class="panel-head"><h2 id="pTitle">Grown-ups</h2><button class="pbtn primary" id="pClose">Done</button></div>
     <h3>Child</h3>
     <div class="row"><label for="pName">Name<small>Shown on the home screen and said out loud.</small></label><input type="text" id="pName" maxlength="20" autocomplete="off"></div>
     <h3>Sound and help</h3>
@@ -313,7 +341,8 @@ label.pbtn{flex:none;display:inline-block}
     <div class="pbtns"><button class="pbtn" id="pSave" hidden>Save to phone</button><button class="pbtn" id="pFull" hidden>Full screen</button></div>
     <h3>Saved pictures</h3>
     <div class="mineList" id="pMine"></div>
-    <p class="note">Sound and talking start off. Pictures and stars are kept in this browser on this phone. Clearing the browser's data removes them.</p>
+    <p class="note">Pictures and stars are kept in this browser on this phone. Clearing the browser's data removes them.</p>
+    <div class="about"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#BFE3FF"/><rect x="14" y="12" width="36" height="40" rx="6" fill="#fff" stroke="#24304F" stroke-width="3" transform="rotate(-6 32 32)"/><path d="M32 20l3.5 7.3 8 1-5.8 5.5 1.5 7.9L32 37.9l-7.2 3.8 1.5-7.9-5.8-5.5 8-1z" fill="#FFD23F" stroke="#24304F" stroke-width="2.4" stroke-linejoin="round"/></svg><span><b>Eloise's Colouring</b> · version 3.0<br>No ads, no accounts, nothing leaves this phone.</span></div>
   </div>
 </div>
 
@@ -1665,6 +1694,7 @@ function renderTitle(){
 }
 function renderHome(){
   renderTitle();
+  $('tip').hidden = !!S.tipSeen;
   $('starCount').textContent = S.stars;
   const idx = readIdx();
   const recent = idx[0];
@@ -1704,7 +1734,9 @@ document.querySelectorAll('.cat').forEach(c => c.onclick = () => {
 });
 function showView(v){
   if (view === 'paint' && v !== 'paint') saveNow();
+  const changed = view !== v;
   view = v; $('home').hidden = v !== 'home'; $('paint').hidden = v !== 'paint';
+  if (changed && !calm.matches){ const el = $(v); el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); }
   if (v === 'paint'){ keepAwake(); requestAnimationFrame(fit); }
   else renderHome();
   userActed();
@@ -1731,7 +1763,9 @@ holdGate($('gearHome')); holdGate($('gearPaint'));
 let downloads = null;
 const inViewer = !!(window.claude && typeof window.claude.use === 'function');
 if (inViewer){ try { window.claude.use('downloads').then(d => { downloads = d; }).catch(() => {}); } catch(e){} }
+$('tipOk').onclick = () => { S.tipSeen = true; saveSettings(); $('tip').hidden = true; };
 function openParent(){
+  if (!S.tipSeen){ S.tipSeen = true; saveSettings(); $('tip').hidden = true; }
   saveNow(); clearTimeout(idleT); hand.hidden = true;
   $('pName').value = S.name; $('pSound').checked = S.sound; $('pVoice').checked = S.voice; $('pInside').checked = S.inside; $('pHints').checked = S.hints;
   if (S.custom) $('pCustom').value = S.custom;
