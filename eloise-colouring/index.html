@@ -109,8 +109,12 @@ button{font-family:inherit;color:inherit}
 
 .stage{flex:1;min-height:0;display:grid;place-items:center;position:relative}
 #cv{background:var(--paper);border-radius:20px;box-shadow:0 0 0 7px var(--cur),0 0 0 11px #fff,0 12px 24px var(--shadow);transition:box-shadow .25s;touch-action:none;display:block;max-width:100%;-webkit-touch-callout:none}
-#cv.happy{animation:happy 1.2s ease-in-out 2}
-@keyframes happy{20%{transform:rotate(-3deg) scale(1.03)}50%{transform:rotate(3deg) scale(1.05)}80%{transform:rotate(-1deg) scale(1.02)}}
+#pic{position:relative;display:block}
+#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:20px}
+.stage.alive{overflow:hidden}
+#meter.ready{cursor:pointer}
+#meter.ready b{animation:twirl 1.6s ease-in-out infinite}
+@keyframes twirl{50%{transform:translateY(-50%) scale(1.4) rotate(20deg)}}
 #hand{position:absolute;width:78px;height:78px;pointer-events:none;z-index:3;transform:translate(-22%,-8%);animation:poke 1s ease-in-out infinite}
 @keyframes poke{50%{transform:translate(-22%,-8%) translate(8px,14px) scale(.92)}}
 #hand::before{content:"";position:absolute;left:4px;top:-2px;width:34px;height:34px;border-radius:50%;border:5px solid #fff;box-shadow:0 0 0 3px var(--ink);animation:ring 1s ease-out infinite;opacity:0}
@@ -176,6 +180,22 @@ button{font-family:inherit;color:inherit}
 .note{font-size:.82rem;opacity:.65;margin:14px 0 0}
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:40;background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;pointer-events:none}
 
+#sleepy{position:fixed;inset:0;z-index:25;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;overflow:hidden;
+  background:linear-gradient(#18224A,#3A3E8C);color:#FFF6D8;box-sizing:border-box;
+  padding:max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
+#sleepy h2{font-size:clamp(2.2rem,11vw,3.4rem);margin:0;line-height:1.05;text-wrap:balance}
+#sleepy p{font-size:1.35rem;margin:0;opacity:.85;font-weight:600}
+#sleepy .moon{width:min(46vw,190px);height:auto;animation:snooze 4s ease-in-out infinite}
+@keyframes snooze{50%{transform:translateY(-10px) rotate(-4deg)}}
+#sleepy .z{position:absolute;font-weight:700;color:#FFF6D8;opacity:0;animation:zz 3s ease-out infinite}
+@keyframes zz{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translate(30px,-70px) scale(1.3)}}
+#sleepy .dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#FFF6D8;animation:tw 2.4s ease-in-out infinite}
+@keyframes tw{50%{opacity:.2;transform:scale(.5)}}
+#gearSleepy{position:absolute;top:max(12px, env(safe-area-inset-top, 0px));right:max(16px, env(safe-area-inset-right, 0px));--as:rgba(255,255,255,.85)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.panel select{font:inherit;font-size:16px;padding:8px 10px;border:2px solid #C9D3E3;border-radius:10px;background:#fff;color:var(--ink)}
+label.pbtn{flex:none;display:inline-block}
+#pPhotoPreview{width:96px;aspect-ratio:8/9;object-fit:contain;border:2px solid #C9D3E3;border-radius:10px;background:#fff;flex:none}
 #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
 .yay{position:fixed;left:50%;top:38%;z-index:21;pointer-events:none;white-space:nowrap;background:linear-gradient(#fff,#FFF6C9);color:var(--pink);
   font-size:clamp(1.6rem,8vw,2.8rem);font-weight:700;padding:10px 26px;border-radius:999px;border:4px solid var(--ink);
@@ -232,7 +252,7 @@ button{font-family:inherit;color:inherit}
   </div>
 
   <div class="stage" id="stage">
-    <canvas id="cv" aria-label="Colouring page"></canvas>
+    <div id="pic"><canvas id="cv" aria-label="Colouring page"></canvas><canvas id="fx" aria-hidden="true"></canvas></div>
     <div id="hand" hidden><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 6c3 0 5 2 5 5v18l3-1V20c0-3 2-5 5-5s5 2 5 5v8l2 .3V24c0-3 2-4.5 4.5-4.5S49 21 49 24v6l1 .3c0-2.5 2-4 4-4s4 1.7 4 4.5V44c0 9-7 16-16 16h-6c-6 0-10-3-13-8L9 38c-1.6-2.6-.8-5.7 1.6-7.1 2.3-1.3 5-.6 6.5 1.6L15 30V11c0-3 2-5 5-5z" fill="#FFE0C2" stroke="#24304F" stroke-width="3.2" stroke-linejoin="round"/></svg></div>
     <button class="btn" id="nextBtn" hidden aria-label="Next picture"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16h18M17 8l8 8-8 8"/></svg></button>
   </div>
@@ -264,6 +284,14 @@ button{font-family:inherit;color:inherit}
 </div>
 
 <!-- ================= GROWN-UPS ================= -->
+<div id="sleepy" hidden role="status">
+  <button class="btn gear" id="gearSleepy" aria-label="Grown-ups: press and hold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
+  <i class="dot" style="left:12%;top:18%"></i><i class="dot" style="left:82%;top:14%;animation-delay:.6s"></i><i class="dot" style="left:70%;top:72%;animation-delay:1.2s"></i><i class="dot" style="left:20%;top:78%;animation-delay:1.8s"></i><i class="dot" style="left:48%;top:9%;animation-delay:.9s"></i>
+  <div style="position:relative"><svg class="moon" viewBox="0 0 120 120" aria-hidden="true"><path d="M78 10A52 52 0 1 0 110 84 42 42 0 0 1 78 10z" fill="#FFE27A" stroke="#24304F" stroke-width="4" stroke-linejoin="round"/><g transform="translate(-18,-2)"><path d="M38 62q6 5 12 0M62 74q6 5 12 0" fill="none" stroke="#24304F" stroke-width="4" stroke-linecap="round"/><path d="M48 88q8 6 16 0" fill="none" stroke="#24304F" stroke-width="4" stroke-linecap="round"/><circle cx="38" cy="78" r="5" fill="#FF9FB5"/><circle cx="72" cy="90" r="5" fill="#FF9FB5"/></g></svg>
+  <b class="z" style="right:-6px;top:6px;font-size:1.6rem">z</b><b class="z" style="right:-26px;top:-18px;font-size:2.2rem;animation-delay:1s">z</b></div>
+  <h2>All done for now!</h2>
+  <p id="sleepyName"></p>
+</div>
 <div class="sheet" id="parent" hidden>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle">
     <div style="display:flex;align-items:center;gap:12px"><h2 id="pTitle">Grown-ups</h2><button class="pbtn primary" id="pClose">Done</button></div>
@@ -275,11 +303,17 @@ button{font-family:inherit;color:inherit}
     <div class="row"><label for="pInside">Stay inside the lines<small>Crayon and wand only paint the space where the stroke starts.</small></label><input type="checkbox" class="switch" id="pInside"></div>
     <div class="row"><label for="pHints">Helping hand<small>After a quiet moment, a hand points at a space still to colour.</small></label><input type="checkbox" class="switch" id="pHints"></div>
     <div class="row"><label for="pCustom">Special colour<small>Adds one extra paint pot of your choosing.</small></label><input type="color" id="pCustom" value="#7FD8FF"></div>
+    <h3>Photo colouring page</h3>
+    <div class="row"><label for="pPhoto">Make one from a photo<small>Choose a photo of family, a pet or a favourite toy. It becomes a page to colour in Mine.</small></label><label class="pbtn" for="pPhoto">Choose photo</label><input type="file" id="pPhoto" accept="image/*" class="vh"></div>
+    <div class="row" id="pPhotoOut" hidden><img id="pPhotoPreview" alt="The new colouring page"><span id="pPhotoMsg"></span></div>
+    <h3>Time limit</h3>
+    <div class="row"><label for="pLimit">Colouring time<small>When it runs out, the app says goodbye and shows a sleepy screen.</small></label><select id="pLimit"><option value="0">No limit</option><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="20">20 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option></select></div>
+    <div class="row"><label>This turn<small id="pUsed"></small></label><button class="pbtn" id="pNewTurn">Start a new turn</button></div>
     <h3>This picture</h3>
     <div class="pbtns"><button class="pbtn" id="pSave" hidden>Save to phone</button><button class="pbtn" id="pFull" hidden>Full screen</button></div>
     <h3>Saved pictures</h3>
     <div class="mineList" id="pMine"></div>
-    <p class="note">Pictures and stars are kept in this browser on this phone. Clearing the browser's data removes them.</p>
+    <p class="note">Sound and talking start off. Pictures and stars are kept in this browser on this phone. Clearing the browser's data removes them.</p>
   </div>
 </div>
 
@@ -298,7 +332,11 @@ const calm = matchMedia('(prefers-reduced-motion: reduce)');
 /* ---------- settings (kept on this device) ---------- */
 const SKEY = 'eloise2-settings';
 function readJSON(k){ try { const v = JSON.parse(localStorage.getItem(k) || 'null'); return v && typeof v === 'object' ? v : null; } catch(e){ return null; } }
-const S = Object.assign({name:'Eloise', sound:true, voice:true, inside:true, hints:true, stars:0, custom:''}, readJSON(SKEY) || {});
+const stored = readJSON(SKEY) || {};
+const S = Object.assign({name:'Eloise', sound:false, voice:false, inside:true, hints:true, stars:0, custom:'', limit:0}, stored);
+// Sound and talking start off. Settings saved by the first version had them on, so switch those off once.
+if (stored.v !== 2){ S.sound = false; S.voice = false; S.v = 2; try { localStorage.setItem(SKEY, JSON.stringify(S)); } catch(e){} }
+S.limit = [0,10,15,20,30,45].includes(+S.limit) ? +S.limit : 0;
 if (typeof S.name !== 'string' || !S.name.trim()) S.name = 'Eloise';
 S.stars = Math.max(0, Math.floor(+S.stars || 0));
 function saveSettings(){ try { localStorage.setItem(SKEY, JSON.stringify(S)); } catch(e){} }
@@ -337,6 +375,29 @@ const SFX = {
   open: () => whoosh(true),
   win: () => { [523,659,784,1047,784,1047,1319].forEach((f, k) => tone(f, f, k === 6 ? .5 : .16, 'triangle', .2, k * .12)); }
 };
+Object.assign(SFX, {
+  meow: () => { tone(500, 900, .18, 'triangle', .18); tone(900, 450, .35, 'triangle', .16, .17); },
+  roar: () => { tone(110, 70, .9, 'sawtooth', .16); tone(160, 90, .9, 'square', .05); },
+  boing: () => { tone(180, 620, .12, 'sine', .22); tone(620, 300, .35, 'sine', .14, .12); },
+  bubbles: () => { for (let k = 0; k < 6; k++) tone(300 + Math.random()*300, 900 + Math.random()*600, .09, 'sine', .14, k * .11); },
+  hoot: () => { tone(420, 390, .28, 'sine', .25); tone(440, 380, .45, 'sine', .25, .4); },
+  quack: () => { tone(520, 380, .13, 'sawtooth', .09); tone(520, 380, .13, 'sawtooth', .09, .2); },
+  ribbit: () => { tone(260, 180, .08, 'square', .08); tone(300, 190, .12, 'square', .08, .1); },
+  oink: () => { tone(220, 330, .12, 'sawtooth', .09); tone(240, 340, .15, 'sawtooth', .09, .18); },
+  toot: () => { tone(330, 440, .25, 'sawtooth', .1); tone(440, 660, .5, 'sawtooth', .1, .22); },
+  baa: () => { for (let k = 0; k < 5; k++) tone(430, 410, .11, 'sawtooth', .08, k * .1); },
+  tweet: () => { [0, .12, .24].forEach(d => tone(2200, 3400, .07, 'sine', .12, d)); tone(3000, 2400, .12, 'sine', .1, .38); },
+  beep: () => { tone(440, 440, .14, 'square', .08); tone(440, 440, .18, 'square', .08, .22); },
+  choo: () => { [0, .45].forEach(d => { tone(587, 587, .35, 'triangle', .14, d); tone(740, 740, .35, 'triangle', .12, d); }); },
+  horn: () => { tone(147, 147, .7, 'sawtooth', .1); tone(220, 220, .7, 'sawtooth', .06); },
+  rocket: () => { tone(90, 40, 1.6, 'sawtooth', .14, .6); setTimeout(() => whoosh(true), 700); },
+  twinkle: () => { [1568,2093,2637,3136,2637,3136].forEach((f, k) => tone(f, f, .14, 'sine', .1, k * .09)); },
+  jingle: () => { for (let k = 0; k < 8; k++){ const f = k % 2 ? 2349 : 2093; tone(f, f, .1, 'sine', .1, k * .08); } },
+  yum: () => { tone(400, 700, .15, 'triangle', .18); tone(500, 800, .2, 'triangle', .18, .2); },
+  dingdong: () => { tone(659, 659, .5, 'sine', .22); tone(523, 523, .8, 'sine', .22, .45); },
+  splash: () => whoosh(true),
+  lullaby: () => { [784,659,587,523].forEach((f, k) => tone(f, f, .45, 'sine', .14, k * .4)); }
+});
 function buzz(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch(e){} }
 
 /* ---------- talking ---------- */
@@ -349,10 +410,10 @@ function pickVoice(){
   } catch(e){}
 }
 try { pickVoice(); speechSynthesis.addEventListener && speechSynthesis.addEventListener('voiceschanged', pickVoice); } catch(e){}
-function say(text){
+function say(text, queue){
   if (!S.voice || !('speechSynthesis' in window)) return;
   try {
-    speechSynthesis.cancel();
+    if (!queue) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     if (voice){ u.voice = voice; u.lang = voice.lang; } else u.lang = 'en-NZ';
     u.rate = .92; u.pitch = 1.25; u.volume = 1;
@@ -829,8 +890,88 @@ function say(text){
   }
 
 
-/* ---------- four new pictures ---------- */
+/* ---------- newer pictures ---------- */
 PRESETS.push(
+  ['Kiwi', (g, P) => {
+    P.ell(545,100,50,50); P.cloud(150,110,0.85); P.ground(668);
+    g.beginPath(); g.moveTo(275,520); g.lineTo(258,636); g.moveTo(370,520); g.lineTo(386,636);
+    [[258,636],[386,636]].forEach(([x,y]) => { g.moveTo(x,y); g.lineTo(x-34,y+10); g.moveTo(x,y); g.lineTo(x,y+14); g.moveTo(x,y); g.lineTo(x+34,y+10); });
+    g.stroke();
+    P.blob(() => { g.moveTo(122,352); g.quadraticCurveTo(70,430,52,545); g.quadraticCurveTo(96,450,145,382); g.closePath(); });
+    P.ell(345,420,190,145);
+    P.ell(180,330,72,64);
+    P.dot(165,312,11);
+    g.beginPath(); [[300,350],[400,380],[330,450],[440,460],[250,430],[380,520]].forEach(([x,y]) => { g.moveTo(x-16,y-10); g.lineTo(x,y); g.lineTo(x+16,y-10); }); g.stroke();
+  }],
+  ['Sheep', (g, P) => {
+    P.ell(550,95,48,48); P.cloud(330,90,0.75); P.ground(690);
+    [[205,470],[285,490],[395,490],[475,470]].forEach(([x,y]) => P.blob(() => g.rect(x-25,y,50,682-y)));
+    P.blob(() => { const cx = 345, cy = 400, rx = 180, ry = 118, n = 14;
+      for (let k = 0; k <= n; k++){ const a = k*2*Math.PI/n, x = cx + Math.cos(a)*rx, y = cy + Math.sin(a)*ry;
+        if (!k){ g.moveTo(x,y); continue; } const m = (k - .5)*2*Math.PI/n; g.quadraticCurveTo(cx + Math.cos(m)*rx*1.25, cy + Math.sin(m)*ry*1.25, x, y); }
+      g.closePath(); });
+    P.ell(118,318,36,18,-0.5); P.ell(222,312,36,18,0.5);
+    P.ell(168,370,64,84,-0.25);
+    P.ell(172,292,46,30);
+    P.dot(150,360,10); P.dot(192,355,10);
+    g.beginPath(); g.arc(176,400,20,0.3,Math.PI-0.3); g.stroke();
+  }],
+  ['Tūī', (g, P) => {
+    P.ell(550,95,48,48); P.cloud(130,95,0.8);
+    P.blob(() => { g.moveTo(400,470); g.lineTo(560,610); g.lineTo(505,650); g.lineTo(365,505); g.closePath(); });
+    P.blob(() => { g.moveTo(20,560); g.quadraticCurveTo(320,515,620,575); g.lineTo(620,612); g.quadraticCurveTo(320,555,20,598); g.closePath(); });
+    P.ell(560,540,52,24,-0.5); P.ell(90,535,52,24,0.45);
+    P.ell(330,410,120,148,-0.45);
+    P.ell(365,425,60,104,-0.5);
+    P.ell(250,268,80,74);
+    P.ink(() => { g.moveTo(180,252); g.lineTo(105,272); g.lineTo(182,288); g.closePath(); });
+    P.dot(232,252,12);
+    P.ell(244,346,46,32);
+  }],
+  ['Beach', (g, P) => {
+    P.ell(530,105,52,52);
+    for (let k = 0; k < 8; k++){ const a = k*Math.PI/4; g.beginPath(); g.moveTo(530+Math.cos(a)*70,105+Math.sin(a)*70); g.lineTo(530+Math.cos(a)*96,105+Math.sin(a)*96); g.stroke(); }
+    P.cloud(150,110,0.85);
+    g.beginPath(); g.moveTo(0,290); g.lineTo(640,290); g.stroke();
+    g.beginPath(); g.moveTo(0,380); for (let x = 0; x < 639; x += 640/6) g.quadraticCurveTo(x+640/12,355,x+640/6,380); g.stroke();
+    g.beginPath(); g.moveTo(0,470); for (let x = 0; x < 639; x += 80) g.quadraticCurveTo(x+40,445,x+80,470); g.stroke();
+    g.beginPath(); g.moveTo(170,480); g.lineTo(170,395); g.stroke();
+    P.blob(() => { g.moveTo(172,395); g.lineTo(255,420); g.lineTo(172,445); g.closePath(); });
+    P.blob(() => g.rect(70,560,200,110));
+    P.blob(() => g.rect(120,480,100,82));
+    P.blob(() => { g.moveTo(145,670); g.lineTo(145,625); g.arc(170,625,25,Math.PI,0); g.lineTo(195,670); g.closePath(); });
+    g.beginPath(); g.arc(455,560,50,Math.PI,0); g.stroke();
+    P.blob(() => { g.moveTo(395,560); g.lineTo(515,560); g.lineTo(497,665); g.lineTo(413,665); g.closePath(); });
+    g.beginPath(); g.moveTo(585,470); g.lineTo(585,580); g.stroke();
+    P.blob(() => { g.moveTo(555,580); g.lineTo(615,580); g.lineTo(615,625); g.quadraticCurveTo(585,665,555,625); g.closePath(); });
+    P.star(335,640,36);
+  }],
+  ['Christmas tree', (g, P) => {
+    g.beginPath(); g.moveTo(0,690); g.lineTo(640,690); g.stroke();
+    P.blob(() => g.rect(285,540,70,150));
+    P.blob(() => { g.moveTo(320,330); g.lineTo(545,560); g.lineTo(95,560); g.closePath(); });
+    P.blob(() => { g.moveTo(320,215); g.lineTo(490,425); g.lineTo(150,425); g.closePath(); });
+    P.blob(() => { g.moveTo(320,120); g.lineTo(445,295); g.lineTo(195,295); g.closePath(); });
+    P.star(320,92,46);
+    [[230,510],[410,505],[320,470],[245,390],[395,385],[320,250]].forEach(([x,y]) => P.ell(x,y,26,26));
+    P.blob(() => g.rect(80,600,130,90)); P.blob(() => g.rect(440,615,120,75));
+    g.beginPath(); g.moveTo(145,600); g.lineTo(145,690); g.moveTo(500,615); g.lineTo(500,690); g.stroke();
+    P.ell(125,592,24,14); P.ell(165,592,24,14); P.ell(480,607,22,13); P.ell(520,607,22,13);
+    P.star(70,120,38); P.star(570,130,38);
+  }],
+  ['Pavlova', (g, P) => {
+    P.star(80,100,42); P.star(560,110,40);
+    P.ell(320,610,270,50);
+    const base = () => { g.beginPath(); g.moveTo(110,430); g.lineTo(110,565); g.quadraticCurveTo(320,640,530,565); g.lineTo(530,430); g.closePath(); };
+    base(); g.fill(); g.save(); g.clip();
+    g.beginPath(); [190,270,370,450].forEach(x => { g.moveTo(x,430); g.quadraticCurveTo(x+12,520,x,640); }); g.stroke();
+    g.restore(); base(); g.stroke();
+    P.blob(() => { g.moveTo(96,440); for (let k = 0; k < 5; k++){ const x = 96 + k*89.6; g.quadraticCurveTo(x+44.8,360,x+89.6, k === 4 ? 440 : 425); } g.quadraticCurveTo(320,505,96,440); g.closePath(); });
+    [[203,345,56],[430,350,54]].forEach(([x,y,r]) => { P.ell(x,y,r,r); P.ell(x,y,r*.5,r*.5); for (let k = 0; k < 8; k++){ const a = k*Math.PI/4; P.dot(x + Math.cos(a)*r*.76, y + Math.sin(a)*r*.76, 4.5); } });
+    P.blob(() => { g.moveTo(272,315); g.quadraticCurveTo(315,262,358,315); g.quadraticCurveTo(352,372,315,392); g.quadraticCurveTo(278,372,272,315); g.closePath(); });
+    P.ink(() => { g.moveTo(288,300); g.lineTo(315,276); g.lineTo(342,300); g.lineTo(315,312); g.closePath(); });
+  }],
+
   ['Flower', (g, P) => {
     P.star(80,90,40); P.ell(560,95,48,48); P.ground(700);
     g.beginPath(); g.moveTo(320,480); g.lineTo(320,320); g.stroke();
@@ -877,14 +1018,14 @@ PRESETS.push(
 );
 
 const CATS = {
-  animals: {say:'Animals', list:['Cat','Dinosaur','Butterfly','Teddy bear','Fish','Owl','Bunny','Duck','Frog','Penguin','Lion','Pig','Elephant','Whale','Turtle','Snail','Ladybird']},
-  party:   {say:'Party things', list:['Birthday cake','Balloons','Cupcake','Ice cream','Presents']},
+  animals: {say:'Animals', list:['Cat','Kiwi','Dinosaur','Sheep','Tūī','Butterfly','Teddy bear','Fish','Owl','Bunny','Duck','Frog','Penguin','Lion','Pig','Elephant','Whale','Turtle','Snail','Ladybird']},
+  party:   {say:'Party things', list:['Birthday cake','Pavlova','Christmas tree','Balloons','Cupcake','Ice cream','Presents']},
   go:      {say:"Things that go", list:['Rocket','Car','Train','Boat','Hot air balloon']},
-  outside: {say:'Outside', list:['Rainbow','Flower','Sun','House','Castle','Apple tree']},
+  outside: {say:'Outside', list:['Beach','Rainbow','Flower','Sun','House','Castle','Apple tree']},
   mine:    {say:'My pictures', list:[]}
 };
 const BYNAME = new Map(PRESETS.map((p, i) => [p[0], i]));
-const article = n => /s$/.test(n) && n !== 'Ice cream' ? 'the ' + n.toLowerCase() : n === 'Ice cream' ? 'the ice cream' : 'the ' + n.toLowerCase();
+const article = n => 'the ' + n.toLowerCase();
 
 /* ---------- canvases ---------- */
 const cv = $('cv'), ctx = cv.getContext('2d'), stage = $('stage');
@@ -1047,7 +1188,7 @@ function setup(w, h, m){
   for (let p = 0; p < W*H; p++) if (mask[p]) { const i = p*4; d[i]=INK[0]; d[i+1]=INK[1]; d[i+2]=INK[2]; d[i+3]=255; }
   lctx.putImageData(img, 0, 0);
   history = []; linesURL = null; celebrated = false; dirty = false; syncUndo();
-  labelRegions(); render(); fit(); $('nextBtn').hidden = true;
+  labelRegions(); render(); fit(); $('nextBtn').hidden = true; if (typeof stopAlive === 'function') stopAlive();
 }
 function render(){ cancelAnimationFrame(anim); ctx.drawImage(paint,0,0); ctx.drawImage(lines,0,0); ctx.drawImage(stk,0,0); }
 function splash(x, y, bb){
@@ -1192,6 +1333,9 @@ function allColoured(){ return progress() >= 1; }
 function updateMeter(){
   $('meter').style.visibility = cur.blank ? 'hidden' : '';
   if (!cur.blank) $('meterFill').style.width = Math.round(progress() * 100) + '%';
+  const ready = celebrated && !cur.blank;
+  $('meter').classList.toggle('ready', ready);
+  if (ready){ $('meter').setAttribute('role', 'button'); $('meter').setAttribute('aria-label', 'Make the picture come alive again'); } else { $('meter').removeAttribute('role'); $('meter').removeAttribute('aria-label'); }
 }
 
 /* ---------- fill ---------- */
@@ -1365,7 +1509,7 @@ function userActed(){
   if (S.hints && view === 'paint' && !cur.blank && !celebrated) idleT = setTimeout(showHint, 12000);
 }
 function showHint(){
-  if (view !== 'paint' || cur.blank || celebrated || drawing || !$('parent').hidden) return;
+  if (view !== 'paint' || cur.blank || celebrated || drawing || !$('parent').hidden || timeIsUp) return;
   counts();
   let best = -1;
   for (let r = 0; r < regionSize.length; r++){ if (regionSize[r] < minArea || isDone(r)) continue; if (best < 0 || regionSize[r] > regionSize[best]) best = r; }
@@ -1393,8 +1537,9 @@ function celebrate(){
   SFX.win(); buzz([30, 60, 30]);
   setTimeout(() => say('Hooray! Well done, ' + S.name + '! You get a star!'), 300);
   setTimeout(() => { $('nextBtn').hidden = false; }, 1600);
+  updateMeter();
+  setTimeout(comeAlive, 1300);
   if (calm.matches) return;
-  cv.classList.remove('happy'); void cv.offsetWidth; cv.classList.add('happy');
   const c = $('confetti'), g = c.getContext('2d');
   c.width = innerWidth; c.height = innerHeight; c.hidden = false;
   const bits = Array.from({length: 150}, () => ({ x: Math.random()*c.width, y: -20 - Math.random()*c.height*0.6, vx: (Math.random()-.5)*2, vy: 2.5 + Math.random()*3.5,
@@ -1483,7 +1628,7 @@ function deleteSaved(id){
   if (cur.id === id){ cur.id = null; dirty = false; }
 }
 addEventListener('pagehide', saveNow);
-document.addEventListener('visibilitychange', () => { if (document.hidden) saveNow(); else if (view === 'paint') keepAwake(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) saveNow(); else { if (view === 'paint') keepAwake(); timeTick && setTimeout(timeTick, 0); } });
 
 /* ---------- home ---------- */
 let homeCat = 'animals';
@@ -1594,6 +1739,7 @@ function openParent(){
   $('pFull').hidden = !(document.fullscreenEnabled && document.documentElement.requestFullscreen);
   $('pFull').textContent = document.fullscreenElement ? 'Leave full screen' : 'Full screen';
   buildMineList();
+  $('pLimit').value = String(S.limit); usedText(); $('pPhotoOut').hidden = true;
   $('parent').hidden = false;
 }
 function closeParent(){ $('parent').hidden = true; if (view === 'home') renderHome(); userActed(); }
@@ -1633,9 +1779,304 @@ function buildMineList(){
 let toastT = 0;
 function toast(msg){ const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2200); }
 
+
+/* ---------- finished pictures come to life ---------- */
+const ALIVE = {
+  _: {move:'hop', fx:'stars', word:'Ta-da!', sfx:'boing'},
+  'Cat': {move:'hop', fx:'hearts', word:'Meow!', sfx:'meow'},
+  'Kiwi': {move:'hop', fx:'stars', word:'Kia ora, kiwi!', sfx:'tweet'},
+  'Dinosaur': {move:'stomp', fx:'stars', word:'Roar!', sfx:'roar'},
+  'Sheep': {move:'hop', fx:'hearts', word:'Baa baa!', sfx:'baa'},
+  'Butterfly': {move:'flutter', fx:'flowers', at:[320,300], word:'Flutter, flutter!', sfx:'twinkle'},
+  'Tūī': {move:'sway', fx:'notes', at:[190,240], word:'Tweet tweet!', sfx:'tweet'},
+  'Teddy bear': {move:'sway', fx:'hearts', word:'Big hug!', sfx:'boing'},
+  'Fish': {move:'swim', fx:'bubbles', at:[112,385], word:'Blub blub!', sfx:'bubbles'},
+  'Owl': {move:'sway', fx:'stars', word:'Twit twoo!', sfx:'hoot'},
+  'Bunny': {move:'hop', fx:'hearts', word:'Hop, hop, hop!', sfx:'boing'},
+  'Duck': {move:'sway', fx:'bubbles', at:[300,640], word:'Quack quack!', sfx:'quack'},
+  'Frog': {move:'hop', fx:'bubbles', at:[320,650], word:'Ribbit!', sfx:'ribbit'},
+  'Penguin': {move:'waddle', fx:'stars', word:'Waddle, waddle!', sfx:'boing'},
+  'Lion': {move:'stomp', fx:'stars', word:'Roar!', sfx:'roar'},
+  'Pig': {move:'hop', fx:'hearts', word:'Oink oink!', sfx:'oink'},
+  'Elephant': {move:'stomp', fx:'splash', at:[320,640], word:'Toot toot!', sfx:'toot'},
+  'Whale': {move:'swim', fx:'splash', at:[250,215], word:'Splash!', sfx:'splash'},
+  'Turtle': {move:'sway', fx:'bubbles', at:[555,420], word:'Slowly, slowly!', sfx:'boing'},
+  'Snail': {move:'sway', fx:'sparkles', word:'Slide, slide!', sfx:'twinkle'},
+  'Ladybird': {move:'flutter', fx:'flowers', word:'Fly away, ladybird!', sfx:'twinkle'},
+  'Birthday cake': {move:'wobble', fx:'sparkles', at:[320,180], word:'Happy birthday!', sfx:'twinkle'},
+  'Pavlova': {move:'wobble', fx:'sparkles', at:[320,360], word:'Yum yum, pavlova!', sfx:'yum'},
+  'Christmas tree': {move:'sway', fx:'sparkles', at:[320,330], word:'Merry Christmas!', sfx:'jingle'},
+  'Balloons': {move:'float', fx:'stars', word:'Up, up and away!', sfx:'splash'},
+  'Cupcake': {move:'wobble', fx:'sparkles', word:'Yum yum!', sfx:'yum'},
+  'Ice cream': {move:'wobble', fx:'sparkles', word:'Yum yum!', sfx:'yum'},
+  'Presents': {move:'hop', fx:'stars', word:'Surprise!', sfx:'boing'},
+  'Rocket': {move:'launch', fx:'puffs', at:[320,630], dir:[0,2.4], word:'Three, two, one, blast off!', sfx:'rocket'},
+  'Car': {move:'drive', fx:'puffs', at:[45,530], dir:[-1.6,-.4], word:'Beep beep!', sfx:'beep'},
+  'Train': {move:'drive', fx:'puffs', at:[502,245], dir:[0,-1.6], word:'Choo choo!', sfx:'choo'},
+  'Boat': {move:'float', fx:'bubbles', at:[320,660], word:'Ahoy!', sfx:'horn'},
+  'Hot air balloon': {move:'float', fx:'sparkles', at:[320,265], word:'Up, up and away!', sfx:'splash'},
+  'Beach': {move:'float', fx:'splash', at:[320,430], word:'Splash, splash!', sfx:'splash'},
+  'Rainbow': {move:'pulse', fx:'sparkles', at:[320,420], word:'Wow, a rainbow!', sfx:'twinkle'},
+  'Flower': {move:'sway', fx:'flowers', at:[320,240], word:'What a pretty flower!', sfx:'twinkle'},
+  'Sun': {move:'pulse', fx:'sparkles', at:[320,320], word:'Good morning, sunshine!', sfx:'twinkle'},
+  'House': {move:'pulse', fx:'hearts', word:'Home sweet home!', sfx:'dingdong'},
+  'Castle': {move:'pulse', fx:'stars', word:'Hooray for the castle!', sfx:'win'},
+  'Apple tree': {move:'sway', fx:'flowers', at:[320,260], word:'Whoosh goes the wind!', sfx:'splash'},
+  'Photo': {move:'pulse', fx:'hearts', word:'Beautiful!', sfx:'twinkle'}
+};
+const N_ = 'none';
+const MOVES = {
+  hop: {d:1800, o:'50% 100%', k:[{transform:N_},{transform:'scale(1.06,.9)',offset:.12},{transform:'translateY(-12%) scale(.95,1.06)',offset:.32},{transform:'scale(1.05,.92)',offset:.5},{transform:'translateY(-6%) scale(.98,1.03)',offset:.68},{transform:'scale(1.02,.97)',offset:.84},{transform:N_}]},
+  stomp: {d:1600, o:'50% 100%', k:[0,1,2,3,4,5,6,7].map(i => ({transform: i === 0 || i === 7 ? N_ : `translateX(${i % 2 ? -3 : 3}%) rotate(${i % 2 ? -2 : 2}deg) scale(1.02)`}))},
+  sway: {d:2400, o:'50% 100%', k:[{transform:N_},{transform:'rotate(-6deg)'},{transform:'rotate(6deg)'},{transform:'rotate(-5deg)'},{transform:'rotate(4deg)'},{transform:N_}]},
+  waddle: {d:1800, o:'50% 100%', k:[0,1,2,3,4,5,6,7,8].map(i => ({transform: i === 0 || i === 8 ? N_ : `rotate(${i % 2 ? -5 : 5}deg) translateX(${i % 2 ? -1 : 1}%)`}))},
+  flutter: {d:1800, k:[0,1,2,3,4,5,6,7,8,9,10].map(i => ({transform: i === 0 || i === 10 ? N_ : i % 2 ? 'scaleX(.88) translateY(-4%)' : 'scaleX(1.03) translateY(-2%)'}))},
+  swim: {d:2600, k:[{transform:N_},{transform:'translateX(-7%) rotate(-3deg)'},{transform:'translateX(7%) rotate(3deg)'},{transform:'translateX(-4%) rotate(-2deg)'},{transform:N_}]},
+  float: {d:2800, k:[{transform:N_},{transform:'translateY(-7%) rotate(-2deg)'},{transform:'translateY(1%) rotate(1deg)'},{transform:'translateY(-5%) rotate(2deg)'},{transform:N_}]},
+  wobble: {d:1400, o:'50% 100%', k:[{transform:N_},{transform:'scale(1.1,.9)'},{transform:'scale(.92,1.08)'},{transform:'scale(1.05,.95)'},{transform:'scale(.98,1.02)'},{transform:N_}]},
+  pulse: {d:2000, k:[{transform:N_},{transform:'scale(1.07)'},{transform:N_},{transform:'scale(1.07)'},{transform:N_},{transform:'scale(1.04)'},{transform:N_}]},
+  drive: {d:3000, e:'linear', k:[{transform:N_},{transform:'translateX(-4%)',offset:.1,easing:'ease-in'},{transform:'translateX(140%)',offset:.45,easing:'step-end'},{transform:'translateX(-140%)',offset:.5,easing:'ease-out'},{transform:N_,offset:1}]},
+  launch: {d:3400, e:'linear', k:[{transform:N_},{transform:'translateX(-1%)',offset:.05},{transform:'translateX(1%)',offset:.1},{transform:'translateX(-1%)',offset:.15},{transform:'translateX(1%)',offset:.2},{transform:N_,offset:.25,easing:'ease-in'},{transform:'translateY(-150%)',offset:.55,easing:'step-end'},{transform:'translateY(150%)',offset:.62,easing:'ease-out'},{transform:N_,offset:1}]}
+};
+const pic = $('pic'), fx = $('fx'), fxc = fx.getContext('2d');
+let aliveAnim = null, fxRaf = 0;
+function comeAlive(){
+  if (view !== 'paint' || !W) return;
+  const a = (cur.blank ? null : ALIVE[cur.name]) || ALIVE._;
+  (SFX[a.sfx] || SFX.boing)();
+  say(a.word, true);
+  if (calm.matches) return;
+  if (aliveAnim) aliveAnim.cancel();
+  const m = MOVES[a.move] || MOVES.hop;
+  stage.classList.add('alive');
+  pic.style.transformOrigin = m.o || '50% 50%';
+  try {
+    aliveAnim = pic.animate(m.k, {duration:m.d, easing:m.e || 'ease-in-out'});
+    aliveAnim.onfinish = aliveAnim.oncancel = () => { stage.classList.remove('alive'); aliveAnim = null; };
+  } catch(e){ stage.classList.remove('alive'); }
+  runFx(a.fx, a.at || [320,380], a.dir);
+}
+function runFx(kind, at, dir){
+  cancelAnimationFrame(fxRaf);
+  const r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
+  fx.width = Math.max(1, Math.round(r.width * dpr)); fx.height = Math.max(1, Math.round(r.height * dpr));
+  const k = fx.width / W, R = Math.random, parts = [], t0 = performance.now();
+  let made = 0;
+  const grav = {stars:.05, flowers:.06, splash:.22}[kind] || 0;
+  const spawn = () => {
+    const p = {x:at[0], y:at[1], vx:0, vy:0, life:1, s:12, rot:R()*6, vr:(R() - .5) * .1, c:RAINBOW[R()*RAINBOW.length | 0], ph:R()*6};
+    if (kind === 'hearts'){ p.x += (R() - .5) * 260; p.y += (R() - .5) * 120; p.vx = (R() - .5) * .8; p.vy = -1.6 - R() * 1.6; p.s = 16 + R() * 14; p.c = R() < .5 ? '#FF4D6D' : '#FF8FC8'; }
+    else if (kind === 'notes'){ p.x += (R() - .5) * 60; p.vx = (R() - .5) * 2 - .6; p.vy = -1.5 - R() * 1.2; p.s = 20 + R() * 10; p.c = ['#9B5DE5','#2F80FF','#FF6FB5','#FF9F1C'][R()*4 | 0]; }
+    else if (kind === 'bubbles'){ p.x += (R() - .5) * 50; p.vy = -1.5 - R() * 1.8; p.s = 8 + R() * 16; }
+    else if (kind === 'puffs'){ const d = dir || [0,-1.5]; p.x += (R() - .5) * 24; p.vx = d[0] + (R() - .5) * 1.2; p.vy = d[1] + (R() - .5) * 1.2; p.s = 14 + R() * 10; }
+    else if (kind === 'stars'){ const a = R() * Math.PI * 2, sp = 3 + R() * 5; p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp - 1.5; p.s = 12 + R() * 12; p.c = R() < .5 ? '#FFD23F' : p.c; }
+    else if (kind === 'sparkles'){ p.x += (R() - .5) * 460; p.y += (R() - .5) * 380; p.s = 6 + R() * 12; p.c = R() < .4 ? '#FFFFFF' : R() < .5 ? '#FFD23F' : p.c; }
+    else if (kind === 'flowers'){ const a = -Math.PI/2 + (R() - .5) * 2.4, sp = 3 + R() * 4; p.vx = Math.cos(a) * sp; p.vy = Math.sin(a) * sp; p.s = 10 + R() * 9; }
+    else { p.x += (R() - .5) * 30; p.vx = (R() - .5) * 4; p.vy = -6 - R() * 5; p.s = 6 + R() * 7; p.c = R() < .5 ? '#5BC8FF' : '#2F80FF'; }
+    parts.push(p);
+  };
+  const g = fxc;
+  const tick = t => {
+    const el = t - t0;
+    while (el < 2300 && made < el / 40){ spawn(); made++; }
+    g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,fx.width,fx.height); g.setTransform(k,0,0,k,0,0);
+    g.lineJoin = 'round'; g.lineCap = 'round';
+    let alive = 0;
+    for (const p of parts){
+      p.x += p.vx; p.y += p.vy; p.vy += grav; p.rot += p.vr;
+      p.life -= kind === 'sparkles' ? .02 : kind === 'puffs' ? .014 : .011;
+      if (kind === 'bubbles') p.x += Math.sin(el / 200 + p.ph) * .8;
+      if (kind === 'puffs'){ p.s += .5; p.vx *= .98; p.vy *= .98; }
+      if (p.life <= 0) continue;
+      alive++;
+      g.globalAlpha = Math.min(1, p.life * 1.6);
+      g.strokeStyle = OUT; g.lineWidth = 3;
+      if (kind === 'hearts'){ g.fillStyle = p.c; heart(g, p.x, p.y, p.s * .7); g.stroke(); }
+      else if (kind === 'notes'){ g.fillStyle = p.c; g.save(); g.translate(p.x, p.y); g.rotate(Math.sin(p.rot) * .3); g.beginPath(); g.ellipse(0, 0, p.s*.42, p.s*.32, -.4, 0, 7); g.fill(); g.stroke();
+        g.lineWidth = 4; g.beginPath(); g.moveTo(p.s*.36, -p.s*.1); g.lineTo(p.s*.36, -p.s*1.2); g.quadraticCurveTo(p.s*.8, -p.s*.9, p.s*.85, -p.s*.5); g.stroke(); g.restore(); }
+      else if (kind === 'bubbles'){ g.fillStyle = 'rgba(190,230,255,.45)'; g.strokeStyle = '#2F80FF'; g.beginPath(); g.arc(p.x, p.y, p.s, 0, 7); g.fill(); g.stroke(); g.fillStyle = '#fff'; g.beginPath(); g.arc(p.x - p.s*.35, p.y - p.s*.35, p.s*.22, 0, 7); g.fill(); }
+      else if (kind === 'puffs'){ g.fillStyle = '#F4F6FA'; g.strokeStyle = '#9AA5BD'; g.beginPath(); g.arc(p.x, p.y, p.s, 0, 7); g.fill(); g.stroke(); }
+      else if (kind === 'stars'){ g.fillStyle = p.c; g.save(); g.translate(p.x, p.y); g.rotate(p.rot); star5(g, 0, 0, p.s); g.stroke(); g.restore(); }
+      else if (kind === 'sparkles'){ g.fillStyle = p.c; g.globalAlpha = Math.sin(p.life * Math.PI); twinkle(g, p.x, p.y, p.s); if (p.c === '#FFFFFF'){ g.lineWidth = 1.5; g.stroke(); } }
+      else if (kind === 'flowers'){ g.save(); g.translate(p.x, p.y); g.rotate(p.rot); g.fillStyle = p.c; for (let q = 0; q < 5; q++){ const a = q * Math.PI * 2 / 5; g.beginPath(); g.arc(Math.cos(a)*p.s*.55, Math.sin(a)*p.s*.55, p.s*.45, 0, 7); g.fill(); } g.fillStyle = '#FFD23F'; g.beginPath(); g.arc(0, 0, p.s*.38, 0, 7); g.fill(); g.restore(); }
+      else { g.fillStyle = p.c; g.beginPath(); g.arc(p.x, p.y, p.s, 0, 7); g.fill(); }
+    }
+    g.globalAlpha = 1;
+    if (el < 2300 || alive) fxRaf = requestAnimationFrame(tick);
+    else { g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,fx.width,fx.height); }
+  };
+  fxRaf = requestAnimationFrame(tick);
+}
+function stopAlive(){ if (aliveAnim) aliveAnim.cancel(); cancelAnimationFrame(fxRaf); fxc.setTransform(1,0,0,1,0,0); fxc.clearRect(0,0,fx.width,fx.height); }
+$('meter').addEventListener('click', () => { if (celebrated && !cur.blank && view === 'paint'){ userActed(); comeAlive(); } });
+
+/* ---------- photo → colouring page (grown-ups panel) ---------- */
+function boxBlur(src, w, h, r){
+  const tmp = new Float32Array(w*h), out = new Float32Array(w*h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++){ let s = 0, n = 0; for (let q = -r; q <= r; q++){ const xx = x + q; if (xx < 0 || xx >= w) continue; s += src[y*w + xx]; n++; } tmp[y*w + x] = s / n; }
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++){ let s = 0, n = 0; for (let q = -r; q <= r; q++){ const yy = y + q; if (yy < 0 || yy >= h) continue; s += tmp[yy*w + x]; n++; } out[y*w + x] = s / n; }
+  return out;
+}
+// any space too small for a little finger becomes ink
+function cleanMask(m, w, h){
+  const N = w*h, seen = new Uint8Array(N), stack = new Int32Array(N), min = Math.pow(0.06 * Math.min(w, h), 2), list = new Int32Array(Math.ceil(min) + 1);
+  for (let s0 = 0; s0 < N; s0++){
+    if (seen[s0] || m[s0]) continue;
+    let sp = 0, n = 0, ln = 0; stack[sp++] = s0; seen[s0] = 1;
+    while (sp){
+      const p = stack[--sp]; n++; if (ln < min) list[ln++] = p;
+      const x = p % w;
+      if (x > 0 && !seen[p-1] && !m[p-1]){ seen[p-1] = 1; stack[sp++] = p-1; }
+      if (x < w-1 && !seen[p+1] && !m[p+1]){ seen[p+1] = 1; stack[sp++] = p+1; }
+      if (p >= w && !seen[p-w] && !m[p-w]){ seen[p-w] = 1; stack[sp++] = p-w; }
+      if (p < N-w && !seen[p+w] && !m[p+w]){ seen[p+w] = 1; stack[sp++] = p+w; }
+    }
+    if (n < min) for (let q = 0; q < ln; q++) m[list[q]] = 1;
+  }
+}
+/* The photo is shrunk, softened and split into four shades of light and dark.
+   Patches too small to colour are merged into their neighbours, and the edges
+   between shades become the outlines, so every space is closed and finger-sized. */
+function photoMask(img){
+  const LW = 160, LH = 180, N = LW*LH, K = 4;
+  const c = mk(); c.width = LW; c.height = LH; const g = c.getContext('2d');
+  g.fillStyle = '#fff'; g.fillRect(0,0,LW,LH);
+  const s = Math.max(LW / img.naturalWidth, LH / img.naturalHeight), w = img.naturalWidth * s, h = img.naturalHeight * s;
+  g.imageSmoothingQuality = 'high'; g.drawImage(img, (LW - w) / 2, (LH - h) / 2, w, h);
+  const d = g.getImageData(0,0,LW,LH).data;
+  let L = new Float32Array(N);
+  for (let p = 0; p < N; p++) L[p] = .299*d[p*4] + .587*d[p*4+1] + .114*d[p*4+2];
+  L = boxBlur(boxBlur(L, LW, LH, 2), LW, LH, 2);
+  const so = Float32Array.from(L).sort(), th = [1,2,3].map(i => so[(N * i / K) | 0]);
+  const lev = new Uint8Array(N);
+  for (let p = 0; p < N; p++){ let v = 0; while (v < K - 1 && L[p] > th[v]) v++; lev[p] = v; }
+  const cnt = new Int32Array(K);
+  for (let it = 0; it < 2; it++){
+    const nl = lev.slice();
+    for (let y = 0; y < LH; y++) for (let x = 0; x < LW; x++){
+      cnt.fill(0);
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++){ const xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < LW && yy < LH) cnt[lev[yy*LW + xx]]++; }
+      let b = lev[y*LW + x]; for (let q = 0; q < K; q++) if (cnt[q] > cnt[b]) b = q; nl[y*LW + x] = b;
+    }
+    lev.set(nl);
+  }
+  const MIN = 110, lab = new Int32Array(N), stack = new Int32Array(N), pix = new Int32Array(N);
+  for (let it = 0; it < 12; it++){
+    lab.fill(-1); let changed = false, id = 0;
+    for (let s0 = 0; s0 < N; s0++){
+      if (lab[s0] >= 0) continue;
+      const v = lev[s0]; let sp = 0, n = 0; stack[sp++] = s0; lab[s0] = id; cnt.fill(0);
+      while (sp){
+        const p = stack[--sp]; pix[n++] = p; const x = p % LW;
+        const nb = [x > 0 ? p-1 : -1, x < LW-1 ? p+1 : -1, p >= LW ? p-LW : -1, p < N-LW ? p+LW : -1];
+        for (const q of nb){ if (q < 0) continue; if (lev[q] === v){ if (lab[q] < 0){ lab[q] = id; stack[sp++] = q; } } else cnt[lev[q]]++; }
+      }
+      if (n < MIN){ let b = -1; for (let q = 0; q < K; q++) if (q !== v && (b < 0 || cnt[q] > cnt[b])) b = q; if (b >= 0 && cnt[b] > 0){ for (let q = 0; q < n; q++) lev[pix[q]] = b; changed = true; } }
+      id++;
+    }
+    if (!changed) break;
+  }
+  const out = new Uint8Array(PW*PH), votes = new Float32Array(K);
+  for (let Y = 0; Y < PH; Y++){
+    const fy = (Y + .5) * LH / PH - .5, y0 = Math.max(0, Math.min(LH - 1, Math.floor(fy))), y1 = Math.min(LH - 1, y0 + 1), wy = Math.max(0, Math.min(1, fy - y0));
+    for (let X = 0; X < PW; X++){
+      const fxx = (X + .5) * LW / PW - .5, x0 = Math.max(0, Math.min(LW - 1, Math.floor(fxx))), x1 = Math.min(LW - 1, x0 + 1), wx = Math.max(0, Math.min(1, fxx - x0));
+      votes.fill(0);
+      votes[lev[y0*LW + x0]] += (1 - wx) * (1 - wy); votes[lev[y0*LW + x1]] += wx * (1 - wy);
+      votes[lev[y1*LW + x0]] += (1 - wx) * wy; votes[lev[y1*LW + x1]] += wx * wy;
+      let b = 0; for (let q = 1; q < K; q++) if (votes[q] > votes[b]) b = q; out[Y*PW + X] = b;
+    }
+  }
+  let m = new Uint8Array(PW*PH);
+  for (let y = 0; y < PH; y++) for (let x = 0; x < PW; x++){ const p = y*PW + x, v = out[p]; if ((x < PW-1 && out[p+1] !== v) || (y < PH-1 && out[p+PW] !== v)) m[p] = 1; }
+  for (let it = 0; it < 3; it++){
+    const n2 = m.slice();
+    for (let p = 0; p < PW*PH; p++){ if (!m[p]) continue; const x = p % PW; if (x > 0) n2[p-1] = 1; if (x < PW-1) n2[p+1] = 1; if (p >= PW) n2[p-PW] = 1; if (p < PW*PH-PW) n2[p+PW] = 1; }
+    m = n2;
+  }
+  // soften the staircase edges: shrink and regrow the outline with smoothing, then re-threshold
+  const sc = mk(); sc.width = PW; sc.height = PH; const sg = sc.getContext('2d'), si = sg.createImageData(PW, PH);
+  for (let p = 0; p < PW*PH; p++) if (m[p]) si.data[p*4+3] = 255;
+  sg.putImageData(si, 0, 0);
+  const hc = mk(); hc.width = PW/2; hc.height = PH/2; const hg = hc.getContext('2d'); hg.imageSmoothingQuality = 'high'; hg.drawImage(sc, 0, 0, PW/2, PH/2);
+  sg.clearRect(0,0,PW,PH); sg.imageSmoothingQuality = 'high'; sg.drawImage(hc, 0, 0, PW, PH);
+  const sd = sg.getImageData(0,0,PW,PH).data;
+  for (let p = 0; p < PW*PH; p++) m[p] = sd[p*4+3] > 110 ? 1 : 0;
+  cleanMask(m, PW, PH);
+  return m;
+}
+function photoPage(img){
+  const m = photoMask(img);
+  const lc = mk(); lc.width = PW; lc.height = PH; const lg = lc.getContext('2d'), im = lg.createImageData(PW, PH), d = im.data;
+  for (let p = 0; p < PW*PH; p++) if (m[p]){ const i = p*4; d[i] = INK[0]; d[i+1] = INK[1]; d[i+2] = INK[2]; d[i+3] = 255; }
+  lg.putImageData(im, 0, 0);
+  const pc = mk(); pc.width = PW; pc.height = PH; const pg = pc.getContext('2d'); pg.fillStyle = '#fff'; pg.fillRect(0,0,PW,PH);
+  const tc = mk(); tc.width = 213; tc.height = 240; const tg = tc.getContext('2d'); tg.fillStyle = '#fff'; tg.fillRect(0,0,213,240); tg.drawImage(lc, 0, 0, 213, 240);
+  const thumb = tc.toDataURL('image/jpeg', .85), id = 'p' + Date.now();
+  const rec = JSON.stringify({w:PW, h:PH, name:'Photo', blank:false, cat:'mine', paint:pc.toDataURL('image/png'), lines:lc.toDataURL('image/png')});
+  const idx = readIdx(); idx.unshift({id, thumb, name:'Photo', done:false});
+  const drop = () => { const o = idx.pop(); try { localStorage.removeItem(PIC(o.id)); } catch(e){} };
+  while (idx.length > KEEP) drop();
+  try { localStorage.setItem(PIC(id), rec); localStorage.setItem(IDX, JSON.stringify(idx)); return {ok:true, thumb}; }
+  catch(e){ try { localStorage.removeItem(PIC(id)); } catch(_){} return {ok:false, thumb}; }
+}
+$('pPhoto').addEventListener('change', () => {
+  const f = $('pPhoto').files && $('pPhoto').files[0]; $('pPhoto').value = '';
+  if (!f) return;
+  const msg = $('pPhotoMsg'); $('pPhotoOut').hidden = false; $('pPhotoPreview').removeAttribute('src'); msg.textContent = 'Making the page…';
+  const url = URL.createObjectURL(f), img = new Image();
+  img.onload = () => setTimeout(() => {
+    try {
+      const r = photoPage(img); $('pPhotoPreview').src = r.thumb;
+      msg.textContent = r.ok ? 'Added to Mine. It is also the "Keep colouring" picture on the home screen.' : 'There is no room left on this phone for another picture. Delete a few saved pictures below, then try again.';
+      if (r.ok) buildMineList();
+    } catch(e){ msg.textContent = 'That photo did not work. Try a different one.'; }
+    URL.revokeObjectURL(url);
+  }, 30);
+  img.onerror = () => { msg.textContent = 'That file could not be opened. Choose a JPG or PNG photo.'; URL.revokeObjectURL(url); };
+  img.src = url;
+});
+
+/* ---------- time limit ---------- */
+const TKEY = 'eloise2-turn', BREAK = 30 * 60e3;
+const turn = Object.assign({used:0, last:0}, readJSON(TKEY) || {});
+turn.used = Math.max(0, +turn.used || 0); turn.last = +turn.last || 0;
+let warned = false, timeIsUp = false;
+function saveTurn(){ try { localStorage.setItem(TKEY, JSON.stringify(turn)); } catch(e){} }
+const limitSecs = () => S.limit * 60;
+function usedText(){ $('pUsed').textContent = 'Used ' + Math.floor(turn.used / 60) + ' min. A new turn starts after a 30-minute break.'; }
+function timeTick(){
+  const now = Date.now();
+  if (now - turn.last > BREAK){ turn.used = 0; warned = false; if (timeIsUp) wakeUp(); }
+  if (document.hidden || !$('parent').hidden || timeIsUp) return;
+  turn.used += 5; turn.last = now; saveTurn();
+  const L = limitSecs(); if (!L) return;
+  if (!warned && turn.used >= L - 60 && turn.used < L){ warned = true; say('One more minute, ' + S.name + '!', true); }
+  if (turn.used >= L) timeUp(true);
+}
+function timeUp(loud){
+  timeIsUp = true;
+  if (drawing) endStroke();
+  saveNow(); clearTimeout(idleT); hand.hidden = true; stopAlive();
+  $('sleepyName').textContent = 'See you next time, ' + S.name + '!';
+  $('sleepy').hidden = false;
+  if (loud){ SFX.lullaby(); say('All done for now, ' + S.name + '! Great colouring!'); }
+}
+function wakeUp(){ timeIsUp = false; $('sleepy').hidden = true; userActed(); }
+setInterval(timeTick, 5000);
+holdGate($('gearSleepy'));
+$('pLimit').addEventListener('change', () => {
+  S.limit = +$('pLimit').value || 0; saveSettings();
+  warned = turn.used >= limitSecs() - 60;
+  if (timeIsUp && (!S.limit || turn.used < limitSecs())) wakeUp();
+});
+$('pNewTurn').onclick = () => { turn.used = 0; turn.last = Date.now(); warned = false; saveTurn(); usedText(); if (timeIsUp) wakeUp(); toast('New turn started'); };
+
 /* ---------- start ---------- */
 setTool('fill', false); syncDrawer();
 showView('home');
+if (Date.now() - turn.last > BREAK){ turn.used = 0; saveTurn(); }
+if (S.limit && turn.used >= limitSecs()) timeUp(false);
 })();
 </script>
 
