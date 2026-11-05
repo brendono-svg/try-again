@@ -7,7 +7,7 @@ This is a rebuild of the earlier "Eloise's App". The 34 original pictures, the m
 ## What's new for Eloise
 - **Home screen of big picture cards**, sorted into Animals, Party, Go!, Outside and Mine. There's also a **Surprise!** card (a new random picture each time) and a **blank page** for free drawing.
 - **Keep colouring** card that reopens her last unfinished picture with one tap.
-- **It talks and plays sounds.** Each colour, tool, sticker and picture is said out loud, so she doesn't need to read. Every paint pot plays its own music note, and you'll hear pops, boings and a fanfare.
+- **It can talk and play sounds (off until you turn them on).** Each colour, tool, sticker and picture is said out loud, so she doesn't need to read. Every paint pot plays its own music note, and you'll hear pops, boings and a fanfare.
 - **Stay inside the lines.** The crayon and glitter wand only paint the space where the stroke starts.
 - **Five chunky tools:** paint bucket, crayon, magic glitter wand, stickers and eraser, plus thin, medium and fat sizes.
 - **Rainbow progress bar** that fills up as she colours each space.
