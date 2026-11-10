@@ -65,7 +65,7 @@ button{font-family:inherit;color:inherit}
 #home{gap:12px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y}
 .home-head{display:flex;align-items:center;gap:10px;padding-top:4px}
 .home-head h1{flex:1;min-width:0;margin:0;font-size:clamp(1.9rem,9vw,3rem);line-height:1;font-weight:700;text-wrap:balance;text-shadow:0 3px 0 rgba(255,255,255,.9)}
-.home-head h1 span{display:inline-block;animation:bob 2.8s ease-in-out infinite}
+.home-head h1 span{display:inline-block;animation:bob 2.8s ease-in-out 2}
 .home-head h1 small{display:block;font-size:.5em;color:var(--ink);letter-spacing:.04em;margin-top:2px}
 @keyframes bob{50%{transform:translateY(-5px) rotate(-3deg)}}
 .stars{display:flex;align-items:center;gap:4px;background:var(--paper);border:3px solid var(--ink);border-radius:999px;padding:4px 12px 4px 6px;box-shadow:0 4px 0 var(--ink);font-weight:700;font-size:1.4rem;font-variant-numeric:tabular-nums}
@@ -165,6 +165,20 @@ button{font-family:inherit;color:inherit}
 .pot.stamp{background:var(--paper);border-radius:16px!important}
 .pot.stamp canvas{position:absolute;inset:0;width:100%;height:100%}
 
+#paint.simple #tWand,#paint.simple #tEraser,#paint.simple .trayhead{display:none}
+.gatebox{width:min(360px,100%);text-align:center}
+.gatebox h2{font-family:var(--display);font-size:1.5rem;margin:0 0 6px}
+.gatebox p{margin:0 0 12px;font-size:1.05rem;line-height:1.4}
+.gatebox p b{white-space:nowrap}
+.gdots{display:flex;justify-content:center;gap:10px;margin-bottom:14px}
+.gdots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);box-sizing:border-box}
+.gdots i.on{background:var(--green)}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.keys button{height:60px;border-radius:14px;border:2px solid var(--ink);background:var(--blue-s);font:700 1.5rem system-ui,-apple-system,sans-serif;color:var(--ink);cursor:pointer}
+.keys button:active{background:var(--blue);color:#fff}
+.panel details{border-bottom:1px solid #E4E9F2;padding:10px 0}
+.panel summary{cursor:pointer;font-weight:600}
+.panel details p{margin:8px 0 0;font-size:.9rem;line-height:1.45;opacity:.8}
 /* screen changes, thumbnails, first-run tip */
 .view.enter{animation:enter .28s cubic-bezier(.2,1,.4,1)}
 @keyframes enter{from{opacity:0;transform:translateY(14px) scale(.985)}}
@@ -255,7 +269,7 @@ label.pbtn{flex:none;display:inline-block}
     <button class="btn gear" id="gearHome" aria-label="Grown-ups: press and hold"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(0 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(45 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(90 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(135 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(180 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(225 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(270 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(315 12 12)"/><circle cx="12" cy="12" r="7"/></g><circle cx="12" cy="12" r="2.8" fill="#fff"/></svg></button>
   </header>
 
-  <div class="tip" id="tip" hidden role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(0 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(45 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(90 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(135 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(180 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(225 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(270 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(315 12 12)"/><circle cx="12" cy="12" r="7"/></g><circle cx="12" cy="12" r="2.8" fill="#fff"/></svg><span>Grown-ups: press and hold the gear for 1.5 seconds to turn on sound and talking, set a time limit or make a page from a photo.</span><button id="tipOk">Got it</button></div>
+  <div class="tip" id="tip" hidden role="note"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(0 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(45 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(90 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(135 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(180 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(225 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(270 12 12)"/><rect x="10.2" y="1.6" width="3.6" height="5" rx="1.2" transform="rotate(315 12 12)"/><circle cx="12" cy="12" r="7"/></g><circle cx="12" cy="12" r="2.8" fill="#fff"/></svg><span>Grown-ups: press and hold the gear to open the settings. Sound starts off, and each turn lasts 15 minutes.</span><button id="tipOk">Got it</button></div>
 
   <button class="resume" id="resume" hidden aria-label="Keep colouring my last picture"><img id="resumeImg" alt=""><span>Keep colouring</span><span class="go"><svg viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z" fill="#fff"/></svg></span></button>
 
@@ -320,29 +334,46 @@ label.pbtn{flex:none;display:inline-block}
   <h2>All done for now!</h2>
   <p id="sleepyName"></p>
 </div>
+<div class="sheet" id="gate" hidden>
+  <div class="panel gatebox" role="dialog" aria-modal="true" aria-labelledby="gateT">
+    <h2 id="gateT">Grown-ups only</h2>
+    <p id="gateQ"></p>
+    <div class="gdots" id="gateDots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="keys" id="gateKeys"></div>
+    <button class="pbtn" id="gateCancel">Cancel</button>
+  </div>
+</div>
 <div class="sheet" id="parent" hidden>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle">
     <div class="panel-head"><h2 id="pTitle">Grown-ups</h2><button class="pbtn primary" id="pClose">Done</button></div>
     <h3>Child</h3>
     <div class="row"><label for="pName">Name<small>Shown on the home screen and said out loud.</small></label><input type="text" id="pName" maxlength="20" autocomplete="off"></div>
-    <h3>Sound and help</h3>
-    <div class="row"><label for="pSound">Sounds<small>Pops, boings and music notes.</small></label><input type="checkbox" class="switch" id="pSound"></div>
-    <div class="row"><label for="pVoice">Talking<small>Says colours, pictures and "Well done".</small></label><input type="checkbox" class="switch" id="pVoice"></div>
+    <h3>Colouring time</h3>
+    <div class="row"><label for="pLimit">Each turn lasts<small>She gets a one-minute warning, then the app says goodbye and shows a sleepy screen.</small></label><select id="pLimit"><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="20">20 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="0">No limit</option></select></div>
+    <div class="row"><label for="pRest">Next turn<small>How she gets another turn after the sleepy screen.</small></label><select id="pRest"><option value="30">After a 30-minute break</option><option value="60">After a 1-hour break</option><option value="120">After a 2-hour break</option><option value="0">Only when I start it</option></select></div>
+    <div class="row"><label>This turn<small id="pUsed"></small></label><button class="pbtn" id="pNewTurn">Start a new turn</button></div>
+    <h3>Sound</h3>
+    <div class="row"><label for="pSound">Sounds<small>Pops, boings and music notes. Off until you turn it on.</small></label><input type="checkbox" class="switch" id="pSound"></div>
+    <div class="row"><label for="pVoice">Talking<small>Says colours, pictures and "Well done". Off until you turn it on.</small></label><input type="checkbox" class="switch" id="pVoice"></div>
+    <div class="row"><label for="pVol">Loudness<small>Soft is about half as loud.</small></label><select id="pVol"><option value="soft">Soft</option><option value="normal">Normal</option></select></div>
+    <h3>Making it easier</h3>
+    <div class="row"><label for="pQuick">Quick finish<small>A picture is finished when most of its spaces are coloured, so each one takes a couple of minutes.</small></label><input type="checkbox" class="switch" id="pQuick"></div>
+    <div class="row"><label for="pSimple">Simple tools<small>Shows only the paint bucket, crayon and stickers, with plain colours.</small></label><input type="checkbox" class="switch" id="pSimple"></div>
     <div class="row"><label for="pInside">Stay inside the lines<small>Crayon and wand only paint the space where the stroke starts.</small></label><input type="checkbox" class="switch" id="pInside"></div>
     <div class="row"><label for="pHints">Helping hand<small>After a quiet moment, a hand points at a space still to colour.</small></label><input type="checkbox" class="switch" id="pHints"></div>
     <div class="row"><label for="pCustom">Special colour<small>Adds one extra paint pot of your choosing.</small></label><input type="color" id="pCustom" value="#7FD8FF"></div>
     <h3>Photo colouring page</h3>
-    <div class="row"><label for="pPhoto">Make one from a photo<small>Choose a photo of family, a pet or a favourite toy. It becomes a page to colour in Mine.</small></label><label class="pbtn" for="pPhoto">Choose photo</label><input type="file" id="pPhoto" accept="image/*" class="vh"></div>
+    <div class="row"><label for="pPhoto">Make one from a photo<small>Choose a photo of family, a pet or a favourite toy. It becomes a page to colour in Mine. The photo stays on this phone.</small></label><label class="pbtn" for="pPhoto">Choose photo</label><input type="file" id="pPhoto" accept="image/*" class="vh"></div>
     <div class="row" id="pPhotoOut" hidden><img id="pPhotoPreview" alt="The new colouring page"><span id="pPhotoMsg"></span></div>
-    <h3>Time limit</h3>
-    <div class="row"><label for="pLimit">Colouring time<small>When it runs out, the app says goodbye and shows a sleepy screen.</small></label><select id="pLimit"><option value="0">No limit</option><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="20">20 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option></select></div>
-    <div class="row"><label>This turn<small id="pUsed"></small></label><button class="pbtn" id="pNewTurn">Start a new turn</button></div>
     <h3>This picture</h3>
     <div class="pbtns"><button class="pbtn" id="pSave" hidden>Save to phone</button><button class="pbtn" id="pFull" hidden>Full screen</button></div>
     <h3>Saved pictures</h3>
     <div class="mineList" id="pMine"></div>
     <p class="note">Pictures and stars are kept in this browser on this phone. Clearing the browser's data removes them.</p>
-    <div class="about"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#BFE3FF"/><rect x="14" y="12" width="36" height="40" rx="6" fill="#fff" stroke="#24304F" stroke-width="3" transform="rotate(-6 32 32)"/><path d="M32 20l3.5 7.3 8 1-5.8 5.5 1.5 7.9L32 37.9l-7.2 3.8 1.5-7.9-5.8-5.5 8-1z" fill="#FFD23F" stroke="#24304F" stroke-width="2.4" stroke-linejoin="round"/></svg><span><b>Eloise's Colouring</b> · version 3.0<br>No ads, no accounts, nothing leaves this phone.</span></div>
+    <h3>Tips</h3>
+    <details><summary>Keep her inside the app</summary><p><b>Android:</b> turn on App pinning (Settings → Security), open the app, then pin it from the recent-apps screen. <b>iPhone:</b> turn on Guided Access (Settings → Accessibility), open the app and triple-click the side button. She then can't leave the app until you unlock the phone.</p></details>
+    <details><summary>What the app can and can't do</summary><p>There are no ads, links, purchases, accounts or messages. Her pictures and any photos you choose stay on this phone. The only thing fetched from the internet is the lettering font.</p></details>
+    <div class="about"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#BFE3FF"/><rect x="14" y="12" width="36" height="40" rx="6" fill="#fff" stroke="#24304F" stroke-width="3" transform="rotate(-6 32 32)"/><path d="M32 20l3.5 7.3 8 1-5.8 5.5 1.5 7.9L32 37.9l-7.2 3.8 1.5-7.9-5.8-5.5 8-1z" fill="#FFD23F" stroke="#24304F" stroke-width="2.4" stroke-linejoin="round"/></svg><span><b>Eloise's Colouring</b> · version 3.1<br>No ads, no links, no accounts. Her pictures stay on this phone.</span></div>
   </div>
 </div>
 
@@ -362,19 +393,25 @@ const calm = matchMedia('(prefers-reduced-motion: reduce)');
 const SKEY = 'eloise2-settings';
 function readJSON(k){ try { const v = JSON.parse(localStorage.getItem(k) || 'null'); return v && typeof v === 'object' ? v : null; } catch(e){ return null; } }
 const stored = readJSON(SKEY) || {};
-const S = Object.assign({name:'Eloise', sound:false, voice:false, inside:true, hints:true, stars:0, custom:'', limit:0}, stored);
+const S = Object.assign({name:'Eloise', sound:false, voice:false, vol:'soft', inside:true, hints:true, quick:true, simple:false, stars:0, custom:'', limit:15, rest:30}, stored);
 // Sound and talking start off. Settings saved by the first version had them on, so switch those off once.
-if (stored.v !== 2){ S.sound = false; S.voice = false; S.v = 2; try { localStorage.setItem(SKEY, JSON.stringify(S)); } catch(e){} }
-S.limit = [0,10,15,20,30,45].includes(+S.limit) ? +S.limit : 0;
+if (stored.v !== 2 && stored.v !== 3){ S.sound = false; S.voice = false; }
+// Colouring time now starts at 15 minutes unless a grown-up has already chosen a limit.
+if (stored.v !== 3){ if (!+stored.limit) S.limit = 15; S.v = 3; try { localStorage.setItem(SKEY, JSON.stringify(S)); } catch(e){} }
+S.limit = [0,5,10,15,20,30,45].includes(+S.limit) ? +S.limit : 15;
+S.rest = [0,30,60,120].includes(+S.rest) ? +S.rest : 30;
+if (S.vol !== 'normal') S.vol = 'soft';
 if (typeof S.name !== 'string' || !S.name.trim()) S.name = 'Eloise';
 S.stars = Math.max(0, Math.floor(+S.stars || 0));
 function saveSettings(){ try { localStorage.setItem(SKEY, JSON.stringify(S)); } catch(e){} }
 
 /* ---------- sounds: tiny synth, no files ---------- */
-let AC = null;
+let AC = null, master = null;
 function ac(){
   if (!S.sound) return null;
-  try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch(e){ return null; }
+  try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume();
+    if (!master){ master = AC.createGain(); master.connect(AC.destination); }
+    master.gain.value = S.vol === 'soft' ? .4 : 1; } catch(e){ return null; }
   return AC;
 }
 function tone(f0, f1, dur, type, vol, delay){
@@ -382,7 +419,7 @@ function tone(f0, f1, dur, type, vol, delay){
   const t = a.currentTime + (delay || 0), o = a.createOscillator(), g = a.createGain();
   o.type = type || 'sine'; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur);
   g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || .2, t + .012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-  o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + dur + .03);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + .03);
 }
 function whoosh(up){
   const a = ac(); if (!a) return;
@@ -390,7 +427,7 @@ function whoosh(up){
   for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
   const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(), t = a.currentTime;
   f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(up ? 400 : 2400, t); f.frequency.exponentialRampToValueAtTime(up ? 2400 : 300, t + .4);
-  g.gain.value = .35; s.buffer = buf; s.connect(f); f.connect(g); g.connect(a.destination); s.start(t);
+  g.gain.value = .35; s.buffer = buf; s.connect(f); f.connect(g); g.connect(master); s.start(t);
 }
 const NOTES = [523,587,659,784,880,1047,1175,1319,1568,1760,2093,2349,2637,3136,3520];
 const SFX = {
@@ -445,7 +482,7 @@ function say(text, queue){
     if (!queue) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     if (voice){ u.voice = voice; u.lang = voice.lang; } else u.lang = 'en-NZ';
-    u.rate = .92; u.pitch = 1.25; u.volume = 1;
+    u.rate = .92; u.pitch = 1.25; u.volume = S.vol === 'soft' ? .6 : 1;
     speechSynthesis.speak(u);
   } catch(e){}
 }
@@ -1047,10 +1084,10 @@ PRESETS.push(
 );
 
 const CATS = {
-  animals: {say:'Animals', list:['Cat','Kiwi','Dinosaur','Sheep','Tūī','Butterfly','Teddy bear','Fish','Owl','Bunny','Duck','Frog','Penguin','Lion','Pig','Elephant','Whale','Turtle','Snail','Ladybird']},
-  party:   {say:'Party things', list:['Birthday cake','Pavlova','Christmas tree','Balloons','Cupcake','Ice cream','Presents']},
-  go:      {say:"Things that go", list:['Rocket','Car','Train','Boat','Hot air balloon']},
-  outside: {say:'Outside', list:['Beach','Rainbow','Flower','Sun','House','Castle','Apple tree']},
+  animals: {say:'Animals', list:['Cat','Kiwi','Snail','Whale','Duck','Fish','Ladybird','Butterfly','Frog','Pig','Tūī','Penguin','Teddy bear','Turtle','Sheep','Dinosaur','Elephant','Bunny','Lion','Owl']},
+  party:   {say:'Party things', list:['Balloons','Cupcake','Pavlova','Birthday cake','Ice cream','Christmas tree','Presents']},
+  go:      {say:"Things that go", list:['Boat','Car','Hot air balloon','Rocket','Train']},
+  outside: {say:'Outside', list:['Rainbow','Beach','Apple tree','Flower','Sun','Castle','House']},
   mine:    {say:'My pictures', list:[]}
 };
 const BYNAME = new Map(PRESETS.map((p, i) => [p[0], i]));
@@ -1300,7 +1337,7 @@ function crop(full, bb, layer){
 $('undo').onclick = () => {
   if (!history.length) return;
   history.pop().forEach(h => (h.layer === 's' ? sctx : pctx).putImageData(h.img, h.x, h.y));
-  colOK = false; render(); scheduleSave(); celebrated = !cur.blank && allColoured(); syncUndo(); updateMeter(); SFX.undo(); say('Oops!'); userActed();
+  colOK = false; render(); scheduleSave(); celebrated = !cur.blank && allColoured(); if (!celebrated) $('nextBtn').hidden = true; syncUndo(); updateMeter(); SFX.undo(); say('Oops!'); userActed();
 };
 const wipeBtn = $('wipe'); let wipeT = null;
 function doWipe(){
@@ -1356,7 +1393,8 @@ const isDone = r => colCount[r] >= regionSize[r] * 0.5;
 function progress(){
   counts(); let n = 0, done = 0;
   for (let r = 0; r < regionSize.length; r++){ if (regionSize[r] < minArea) continue; n++; if (isDone(r)) done++; }
-  return n ? done / n : 0;
+  const need = S.quick ? Math.max(1, Math.ceil(n * .8)) : n;   // quick finish: most spaces is enough
+  return n ? Math.min(1, done / need) : 0;
 }
 function allColoured(){ return progress() >= 1; }
 function updateMeter(){
@@ -1533,10 +1571,14 @@ function afterChange(){
 /* ---------- helping hand ---------- */
 let idleT = 0;
 const hand = $('hand');
+let hintCount = 0, napT = 0;
 function userActed(){
-  hand.hidden = true; clearTimeout(idleT);
+  hand.hidden = true; clearTimeout(idleT); hintCount = 0;
   if (S.hints && view === 'paint' && !cur.blank && !celebrated) idleT = setTimeout(showHint, 12000);
+  clearTimeout(napT);
+  if (view === 'paint'){ if (!lock) keepAwake(); napT = setTimeout(() => { try { if (lock) lock.release(); } catch(e){} }, 180000); }
 }
+document.addEventListener('pointerdown', () => userActed(), true);
 function showHint(){
   if (view !== 'paint' || cur.blank || celebrated || drawing || !$('parent').hidden || timeIsUp) return;
   counts();
@@ -1552,47 +1594,37 @@ function showHint(){
   const r = cv.getBoundingClientRect(), sr = stage.getBoundingClientRect();
   hand.style.left = (r.left - sr.left + (bp % W) * r.width / W) + 'px';
   hand.style.top = (r.top - sr.top + ((bp / W) | 0) * r.height / H) + 'px';
-  hand.hidden = false; SFX.hint();
-  idleT = setTimeout(() => { hand.hidden = true; userActed(); }, 6000);
+  hand.hidden = false; if (!hintCount) SFX.hint(); hintCount++;
+  idleT = setTimeout(() => { hand.hidden = true; if (hintCount < 3) idleT = setTimeout(showHint, 15000); }, 6000);
 }
 
 /* ---------- party when the picture is finished ---------- */
 function celebrate(){
   celebrated = true; hand.hidden = true; clearTimeout(idleT);
-  S.stars++; saveSettings(); markDone();
+  const first = !cur.id || !(readIdx().find(x => x.id === cur.id) || {}).done;   // one star per picture
+  if (first){ S.stars++; saveSettings(); }
+  markDone();
   const yay = $('yay'); yay.textContent = 'Well done, ' + S.name + '!';
   yay.hidden = false; yay.classList.remove('pop'); void yay.offsetWidth; yay.classList.add('pop');
   setTimeout(() => { yay.hidden = true; }, 3000);
   SFX.win(); buzz([30, 60, 30]);
-  setTimeout(() => say('Hooray! Well done, ' + S.name + '! You get a star!'), 300);
-  setTimeout(() => { $('nextBtn').hidden = false; }, 1600);
+  setTimeout(() => say('Hooray! Well done, ' + S.name + '!' + (first ? ' You get a star!' : '')), 300);
+  setTimeout(() => { if (celebrated) $('nextBtn').hidden = false; }, 1600);
   updateMeter();
   setTimeout(comeAlive, 1300);
   if (calm.matches) return;
+  // a short shower of confetti, then the picture itself is the show
   const c = $('confetti'), g = c.getContext('2d');
   c.width = innerWidth; c.height = innerHeight; c.hidden = false;
-  const bits = Array.from({length: 150}, () => ({ x: Math.random()*c.width, y: -20 - Math.random()*c.height*0.6, vx: (Math.random()-.5)*2, vy: 2.5 + Math.random()*3.5,
+  const bits = Array.from({length: 70}, () => ({ x: Math.random()*c.width, y: -20 - Math.random()*c.height*0.5, vx: (Math.random()-.5)*2, vy: 2.5 + Math.random()*3,
     r: Math.random()*6.3, vr: (Math.random()-.5)*.3, s: 8 + Math.random()*9, c: RAINBOW[Math.random()*RAINBOW.length | 0] }));
-  const balloons = Array.from({length: 11}, (_, k) => ({ x: (k + .5) / 11 * c.width + (Math.random() - .5) * 20, y: c.height + 40 + Math.random() * 260, v: 1.6 + Math.random() * 1.8, ph: Math.random() * 6, r: 20 + Math.random() * 10, c: RAINBOW[k % RAINBOW.length] }));
-  const sparks = []; let nextBoom = 300;
   const t0 = performance.now();
   (function tick(t){
     const el = t - t0; g.clearRect(0,0,c.width,c.height);
-    for (const b of bits){ b.x += b.vx; b.y += b.vy; b.r += b.vr; g.save(); g.translate(b.x,b.y); g.rotate(b.r); g.fillStyle = b.c; g.fillRect(-b.s/2,-b.s/4,b.s,b.s/2); g.restore(); }
-    for (const b of balloons){
-      b.y -= b.v; const x = b.x + Math.sin(el / 500 + b.ph) * 14;
-      g.strokeStyle = 'rgba(36,48,79,.5)'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(x, b.y + b.r * 1.25); g.quadraticCurveTo(x + 8, b.y + b.r * 2.2, x, b.y + b.r * 3.2); g.stroke();
-      g.fillStyle = b.c; g.beginPath(); g.ellipse(x, b.y, b.r * .85, b.r * 1.1, 0, 0, 7); g.fill();
-      g.beginPath(); g.moveTo(x, b.y + b.r * 1.1); g.lineTo(x - 5, b.y + b.r * 1.45); g.lineTo(x + 5, b.y + b.r * 1.45); g.fill();
-      g.fillStyle = 'rgba(255,255,255,.55)'; g.beginPath(); g.ellipse(x - b.r * .3, b.y - b.r * .4, b.r * .17, b.r * .3, .5, 0, 7); g.fill();
-    }
-    if (el > nextBoom && el < 2600){
-      nextBoom += 450; const cx = c.width * (.15 + Math.random() * .7), cy = c.height * (.12 + Math.random() * .35), col = RAINBOW[Math.random() * 8 | 0];
-      for (let k = 0; k < 26; k++){ const a = k / 26 * 7 + Math.random() * .2, sp = 2 + Math.random() * 3.5; sparks.push({x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, c: k % 3 ? col : '#FFD400'}); }
-    }
-    for (const p of sparks){ p.x += p.vx; p.y += p.vy; p.vy += .06; p.vx *= .985; p.life -= .014; if (p.life > 0){ g.globalAlpha = p.life; g.fillStyle = p.c; g.beginPath(); g.arc(p.x, p.y, 3.2, 0, 7); g.fill(); } }
+    g.globalAlpha = el > 2000 ? Math.max(0, 1 - (el - 2000) / 600) : 1;
+    for (const p of bits){ p.x += p.vx; p.y += p.vy; p.r += p.vr; g.save(); g.translate(p.x,p.y); g.rotate(p.r); g.fillStyle = p.c; g.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); g.restore(); }
     g.globalAlpha = 1;
-    if (el < 5200) requestAnimationFrame(tick); else { g.clearRect(0,0,c.width,c.height); c.hidden = true; }
+    if (el < 2600) requestAnimationFrame(tick); else { g.clearRect(0,0,c.width,c.height); c.hidden = true; }
   })(t0);
 }
 $('nextBtn').onclick = () => {
@@ -1737,11 +1769,12 @@ function showView(v){
   const changed = view !== v;
   view = v; $('home').hidden = v !== 'home'; $('paint').hidden = v !== 'paint';
   if (changed && !calm.matches){ const el = $(v); el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); }
-  if (v === 'paint'){ keepAwake(); requestAnimationFrame(fit); }
+  if (v === 'paint'){ keepAwake(); requestAnimationFrame(fit); if (!inViewer){ try { if (!(history.state && history.state.v === 'paint')) history.pushState({v:'paint'}, ''); } catch(e){} } }
   else renderHome();
   userActed();
 }
-$('homeBtn').onclick = () => { SFX.tool(); showView('home'); };
+$('homeBtn').onclick = () => { SFX.tool(); showView('home'); if (!inViewer){ try { if (history.state && history.state.v === 'paint') history.back(); } catch(e){} } };
+addEventListener('popstate', () => { if (!$('gate').hidden) closeGate(); else if (!$('parent').hidden) closeParent(); else if (view === 'paint') showView('home'); });
 
 /* keep the screen awake while she colours */
 let lock = null;
@@ -1752,14 +1785,35 @@ function holdGate(btn){
   let t0 = 0, raf = 0;
   const stop = () => { cancelAnimationFrame(raf); btn.style.setProperty('--p', 0); t0 = 0; };
   btn.addEventListener('pointerdown', e => { e.preventDefault(); t0 = performance.now();
-    const tick = t => { const k = Math.min(1, (t - t0) / 1500); btn.style.setProperty('--p', k); if (k < 1) raf = requestAnimationFrame(tick); else { stop(); openParent(); } };
+    const tick = t => { const k = Math.min(1, (t - t0) / 1500); btn.style.setProperty('--p', k); if (k < 1) raf = requestAnimationFrame(tick); else { stop(); openGate(); } };
     raf = requestAnimationFrame(tick); });
   ['pointerup','pointercancel','pointerleave'].forEach(n => btn.addEventListener(n, () => { if (t0){ stop(); btn.classList.remove('nudge'); void btn.offsetWidth; btn.classList.add('nudge'); } }));
   btn.addEventListener('animationend', () => btn.classList.remove('nudge'));
   btn.addEventListener('contextmenu', e => e.preventDefault());
-  btn.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && !e.repeat){ e.preventDefault(); openParent(); } });
+  btn.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && !e.repeat){ e.preventDefault(); openGate(); } });
 }
 holdGate($('gearHome')); holdGate($('gearPaint'));
+/* After the hold, a grown-up taps three numbers that are written as words. A three-year-old can't read them,
+   one wrong tap closes it, and it closes by itself after 20 seconds. */
+const NUM_WORDS = ['','one','two','three','four','five','six','seven','eight','nine'];
+let gateWant = [], gateAt = 0, gateT = 0;
+for (let n = 1; n <= 9; n++){ const k = document.createElement('button'); k.textContent = n; k.setAttribute('aria-label', String(n)); k.onclick = () => gateTap(n); $('gateKeys').appendChild(k); }
+function openGate(){
+  const pool = [1,2,3,4,5,6,7,8,9]; gateWant = [];
+  for (let k = 0; k < 3; k++) gateWant.push(pool.splice(Math.random() * pool.length | 0, 1)[0]);
+  gateAt = 0;
+  $('gateQ').innerHTML = 'Tap these numbers in order:<br><b>' + gateWant.map(n => NUM_WORDS[n]).join(', ') + '</b>';
+  [...$('gateDots').children].forEach(d => d.classList.remove('on'));
+  $('gate').hidden = false; clearTimeout(gateT); gateT = setTimeout(closeGate, 20000);
+}
+function closeGate(){ clearTimeout(gateT); $('gate').hidden = true; }
+function gateTap(n){
+  if (n !== gateWant[gateAt]) return closeGate();
+  $('gateDots').children[gateAt].classList.add('on');
+  if (++gateAt === gateWant.length){ closeGate(); openParent(); }
+}
+$('gateCancel').onclick = closeGate;
+$('gate').addEventListener('click', e => { if (e.target === $('gate')) closeGate(); });
 let downloads = null;
 const inViewer = !!(window.claude && typeof window.claude.use === 'function');
 if (inViewer){ try { window.claude.use('downloads').then(d => { downloads = d; }).catch(() => {}); } catch(e){} }
@@ -1768,6 +1822,7 @@ function openParent(){
   if (!S.tipSeen){ S.tipSeen = true; saveSettings(); $('tip').hidden = true; }
   saveNow(); clearTimeout(idleT); hand.hidden = true;
   $('pName').value = S.name; $('pSound').checked = S.sound; $('pVoice').checked = S.voice; $('pInside').checked = S.inside; $('pHints').checked = S.hints;
+  $('pQuick').checked = S.quick; $('pSimple').checked = S.simple; $('pVol').value = S.vol; $('pRest').value = String(S.rest);
   if (S.custom) $('pCustom').value = S.custom;
   $('pSave').hidden = !(view === 'paint' && W && (downloads || !inViewer));
   $('pFull').hidden = !(document.fullscreenEnabled && document.documentElement.requestFullscreen);
@@ -1780,7 +1835,19 @@ function closeParent(){ $('parent').hidden = true; if (view === 'home') renderHo
 $('pClose').onclick = closeParent;
 $('parent').addEventListener('click', e => { if (e.target === $('parent')) closeParent(); });
 $('pName').addEventListener('input', () => { const v = $('pName').value.trim(); S.name = v || 'Eloise'; saveSettings(); renderTitle(); });
-[['pSound','sound'],['pVoice','voice'],['pInside','inside'],['pHints','hints']].forEach(([id, k]) => $(id).addEventListener('change', () => { S[k] = $(id).checked; saveSettings(); if (k === 'voice' && S.voice) say('Hello ' + S.name + '!'); if (k === 'sound' && S.sound) SFX.pick(4); }));
+[['pSound','sound'],['pVoice','voice'],['pInside','inside'],['pHints','hints'],['pQuick','quick'],['pSimple','simple']].forEach(([id, k]) => $(id).addEventListener('change', () => {
+  S[k] = $(id).checked; saveSettings();
+  if (k === 'voice' && S.voice) say('Hello ' + S.name + '!');
+  if (k === 'sound' && S.sound) SFX.pick(4);
+  if (k === 'simple') applySimple();
+  if (k === 'quick' && W){ celebrated = !cur.blank && allColoured(); if (!celebrated) $('nextBtn').hidden = true; updateMeter(); }
+}));
+$('pVol').addEventListener('change', () => { S.vol = $('pVol').value === 'normal' ? 'normal' : 'soft'; saveSettings(); if (S.sound) SFX.pick(4); else if (S.voice) say('Hello ' + S.name + '!'); });
+$('pRest').addEventListener('change', () => { S.rest = +$('pRest').value || 0; saveSettings(); usedText(); });
+function applySimple(){
+  $('paint').classList.toggle('simple', !!S.simple);
+  if (S.simple){ if (tool === 'wand' || tool === 'eraser') setTool('fill', false); size = 1; drawer = 0; if (paintSel && paintSel.kind === 'magic') choose(pots[0], false); syncDrawer(); }
+}
 $('pCustom').addEventListener('input', () => { S.custom = $('pCustom').value; saveSettings(); syncCustom(); });
 $('pFull').onclick = async () => { try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch(e){ toast('Full screen is not available here'); } $('pFull').textContent = document.fullscreenElement ? 'Leave full screen' : 'Full screen'; };
 $('pSave').onclick = () => {
@@ -1811,7 +1878,7 @@ function buildMineList(){
   });
 }
 let toastT = 0;
-function toast(msg){ const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2200); }
+function toast(msg, ms){ const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, ms || 2200); }
 
 
 /* ---------- finished pictures come to life ---------- */
@@ -2072,20 +2139,22 @@ $('pPhoto').addEventListener('change', () => {
 });
 
 /* ---------- time limit ---------- */
-const TKEY = 'eloise2-turn', BREAK = 30 * 60e3;
+const TKEY = 'eloise2-turn';
+// A turn ends for good after the chosen break. With "Only when I start it", an unfinished turn still lapses overnight, but a finished one waits for a grown-up.
+function turnOver(now){ const gap = now - turn.last; return S.rest ? gap > S.rest * 60e3 : gap > 4 * 3600e3 && !(S.limit && turn.used >= S.limit * 60); }
 const turn = Object.assign({used:0, last:0}, readJSON(TKEY) || {});
 turn.used = Math.max(0, +turn.used || 0); turn.last = +turn.last || 0;
 let warned = false, timeIsUp = false;
 function saveTurn(){ try { localStorage.setItem(TKEY, JSON.stringify(turn)); } catch(e){} }
 const limitSecs = () => S.limit * 60;
-function usedText(){ $('pUsed').textContent = 'Used ' + Math.floor(turn.used / 60) + ' min. A new turn starts after a 30-minute break.'; }
+function usedText(){ $('pUsed').textContent = 'Used ' + Math.floor(turn.used / 60) + (S.limit ? ' of ' + S.limit : '') + ' minutes.'; }
 function timeTick(){
   const now = Date.now();
-  if (now - turn.last > BREAK){ turn.used = 0; warned = false; if (timeIsUp) wakeUp(); }
+  if (turnOver(now)){ turn.used = 0; warned = false; if (timeIsUp) wakeUp(); }
   if (document.hidden || !$('parent').hidden || timeIsUp) return;
   turn.used += 5; turn.last = now; saveTurn();
   const L = limitSecs(); if (!L) return;
-  if (!warned && turn.used >= L - 60 && turn.used < L){ warned = true; say('One more minute, ' + S.name + '!', true); }
+  if (!warned && turn.used >= L - 60 && turn.used < L){ warned = true; toast('One more minute!', 5000); SFX.hint(); say('One more minute, ' + S.name + '!', true); }
   if (turn.used >= L) timeUp(true);
 }
 function timeUp(loud){
@@ -2109,7 +2178,8 @@ $('pNewTurn').onclick = () => { turn.used = 0; turn.last = Date.now(); warned = 
 /* ---------- start ---------- */
 setTool('fill', false); syncDrawer();
 showView('home');
-if (Date.now() - turn.last > BREAK){ turn.used = 0; saveTurn(); }
+if (turnOver(Date.now())){ turn.used = 0; saveTurn(); }
+applySimple();
 if (S.limit && turn.used >= limitSecs()) timeUp(false);
 })();
 </script>
