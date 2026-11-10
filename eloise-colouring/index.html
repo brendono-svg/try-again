@@ -22,7 +22,7 @@
 /* Layout: a picture-book sky. Home = big picture cards to choose from; Colour = a white page in a coloured frame,
    five chunky tools, and a paint tray. Everything is tappable with a whole small finger (52px+), and nothing needs reading. */
 :root{
-  --sky:#BFE3FF; --sky-hi:#E6F4FF; --cloud:#FFFFFF;
+  --sky:#BFE3FF; --sky-hi:#E6F4FF; --cloud:#FFFFFF; --hill:#BFEBC4; --hill2:#D3F2CF;
   --ink:#24304F; --ink-soft:rgba(36,48,79,.22); --shadow:rgba(36,48,79,.18);
   --paper:#FFFFFF; --tray:#FFFFFF;
   --red:#FF4D5E; --orange:#FF9F1C; --yellow:#FFD23F; --green:#2FC76A; --blue:#2F80FF; --purple:#9B5DE5; --pink:#FF6FB5; --teal:#11B5A4;
@@ -36,14 +36,16 @@ html,body{height:100%;overscroll-behavior:none}
 html{overflow:hidden;position:fixed;inset:0;width:100%}
 body{margin:0;background:linear-gradient(var(--sky) 0%, var(--sky-hi) 100%) fixed;color:var(--ink);font-family:var(--display);
   touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
-body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.9;
+body::after{content:"";position:fixed;inset:0 -8%;z-index:-1;pointer-events:none;opacity:.9;
   background:
     radial-gradient(ellipse 70px 26px at 12% 14%, var(--cloud) 98%, transparent 100%),
     radial-gradient(ellipse 46px 22px at 18% 11%, var(--cloud) 98%, transparent 100%),
     radial-gradient(ellipse 90px 30px at 86% 22%, var(--cloud) 98%, transparent 100%),
     radial-gradient(ellipse 50px 24px at 80% 19%, var(--cloud) 98%, transparent 100%),
     radial-gradient(ellipse 80px 26px at 70% 92%, var(--cloud) 98%, transparent 100%),
-    radial-gradient(ellipse 60px 22px at 20% 84%, var(--cloud) 98%, transparent 100%);
+    radial-gradient(ellipse 60px 22px at 20% 84%, var(--cloud) 98%, transparent 100%),
+    radial-gradient(ellipse 75% 150px at 18% calc(100% + 60px), var(--hill) 99%, transparent 100%),
+    radial-gradient(ellipse 80% 170px at 88% calc(100% + 90px), var(--hill2) 99%, transparent 100%);
   animation:drift 30s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translateX(4%)}}
 button{font-family:inherit;color:inherit}
@@ -55,7 +57,7 @@ button{font-family:inherit;color:inherit}
 
 /* chunky press-down buttons */
 .btn{--a:var(--blue);--as:var(--blue-s);flex:none;width:var(--t,58px);height:var(--t,58px);box-sizing:border-box;border-radius:20px;border:3px solid var(--ink);
-  background:var(--as);color:var(--a);display:grid;place-items:center;padding:0;cursor:pointer;box-shadow:0 5px 0 var(--ink);transition:transform .08s, box-shadow .08s;position:relative}
+  background:var(--as);color:var(--a);display:grid;place-items:center;padding:0;cursor:pointer;box-shadow:0 5px 0 var(--ink),inset 0 3px 0 rgba(255,255,255,.8);transition:transform .08s, box-shadow .08s;position:relative}
 .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
 .btn svg{width:62%;height:62%}
 .btn:disabled{opacity:.38}
@@ -122,6 +124,7 @@ button{font-family:inherit;color:inherit}
 .stage{flex:1;min-height:0;display:grid;place-items:center;position:relative}
 #cv{background:var(--paper);border-radius:20px;box-shadow:0 0 0 7px var(--cur),0 0 0 11px #fff,0 12px 24px var(--shadow);transition:box-shadow .25s;touch-action:none;display:block;max-width:100%;-webkit-touch-callout:none}
 #pic{position:relative;display:block}
+#pic::after{content:"";position:absolute;inset:0;border-radius:20px;background:var(--grain) 0 0/120px 120px;mix-blend-mode:multiply;opacity:.5;pointer-events:none}
 #fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:20px}
 .stage.alive{overflow:hidden}
 #meter.ready{cursor:pointer}
@@ -139,7 +142,7 @@ button{font-family:inherit;color:inherit}
 #tSticker{--a:var(--green);--as:var(--green-s)} #tEraser{--a:var(--blue);--as:var(--blue-s)}
 .tools .btn svg{width:70%;height:70%}
 
-.tray{background:var(--tray);border:3px solid var(--ink);border-radius:24px;padding:8px;box-shadow:0 5px 0 var(--ink-soft);display:flex;flex-direction:column;gap:8px;
+.tray{background:linear-gradient(var(--tray),#F4F9FF);border:3px solid var(--ink);border-radius:24px;padding:8px;box-shadow:0 5px 0 var(--ink-soft);display:flex;flex-direction:column;gap:8px;
   --b:clamp(36px, calc((100vw - 32px - 22px - 12px - 6 * 7px) / 7), 54px)}
 .trayhead{display:flex;align-items:center;gap:8px}
 .tabs{display:flex;gap:8px;flex:1}
@@ -183,7 +186,12 @@ button{font-family:inherit;color:inherit}
 .view.enter{animation:enter .28s cubic-bezier(.2,1,.4,1)}
 @keyframes enter{from{opacity:0;transform:translateY(14px) scale(.985)}}
 .card img{-webkit-user-drag:none;pointer-events:none}
-.card img:not([src]){background:linear-gradient(100deg,#F2F7FD 30%,#E2EDFA 50%,#F2F7FD 70%) 0 0/250% 100%;animation:shimmer 1.3s linear infinite}
+.grid>.card{--tint:var(--blue-s);background:var(--tint)}
+.grid>.card:nth-child(5n+1){--tint:var(--pink-s)} .grid>.card:nth-child(5n+2){--tint:var(--orange-s)} .grid>.card:nth-child(5n+3){--tint:var(--green-s)}
+.grid>.card:nth-child(5n+4){--tint:var(--blue-s)} .grid>.card:nth-child(5n){--tint:var(--purple-s)}
+.grid>.card img{background:transparent;mix-blend-mode:multiply}
+.grid>.card.mine{background:var(--paper)} .grid>.card.mine img{mix-blend-mode:normal;background:var(--paper)}
+.grid>.card img:not([src]){background:linear-gradient(100deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.7) 50%,rgba(255,255,255,0) 70%) 0 0/250% 100%;animation:shimmer 1.3s linear infinite;mix-blend-mode:normal}
 @keyframes shimmer{to{background-position:-150% 0}}
 .tip{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.92);border:2px solid var(--ink);border-radius:18px;padding:10px 10px 10px 12px;
   font:500 14px/1.35 system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink)}
@@ -357,7 +365,6 @@ label.pbtn{flex:none;display:inline-block}
     <div class="row"><label for="pVoice">Talking<small>Says colours, pictures and "Well done". Off until you turn it on.</small></label><input type="checkbox" class="switch" id="pVoice"></div>
     <div class="row"><label for="pVol">Loudness<small>Soft is about half as loud.</small></label><select id="pVol"><option value="soft">Soft</option><option value="normal">Normal</option></select></div>
     <h3>Making it easier</h3>
-    <div class="row"><label for="pQuick">Quick finish<small>A picture is finished when most of its spaces are coloured, so each one takes a couple of minutes.</small></label><input type="checkbox" class="switch" id="pQuick"></div>
     <div class="row"><label for="pSimple">Simple tools<small>Shows only the paint bucket, crayon and stickers, with plain colours.</small></label><input type="checkbox" class="switch" id="pSimple"></div>
     <div class="row"><label for="pInside">Stay inside the lines<small>Crayon and wand only paint the space where the stroke starts.</small></label><input type="checkbox" class="switch" id="pInside"></div>
     <div class="row"><label for="pHints">Helping hand<small>After a quiet moment, a hand points at a space still to colour.</small></label><input type="checkbox" class="switch" id="pHints"></div>
@@ -373,7 +380,7 @@ label.pbtn{flex:none;display:inline-block}
     <h3>Tips</h3>
     <details><summary>Keep her inside the app</summary><p><b>Android:</b> turn on App pinning (Settings → Security), open the app, then pin it from the recent-apps screen. <b>iPhone:</b> turn on Guided Access (Settings → Accessibility), open the app and triple-click the side button. She then can't leave the app until you unlock the phone.</p></details>
     <details><summary>What the app can and can't do</summary><p>There are no ads, links, purchases, accounts or messages. Her pictures and any photos you choose stay on this phone. The only thing fetched from the internet is the lettering font.</p></details>
-    <div class="about"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#BFE3FF"/><rect x="14" y="12" width="36" height="40" rx="6" fill="#fff" stroke="#24304F" stroke-width="3" transform="rotate(-6 32 32)"/><path d="M32 20l3.5 7.3 8 1-5.8 5.5 1.5 7.9L32 37.9l-7.2 3.8 1.5-7.9-5.8-5.5 8-1z" fill="#FFD23F" stroke="#24304F" stroke-width="2.4" stroke-linejoin="round"/></svg><span><b>Eloise's Colouring</b> · version 3.1<br>No ads, no links, no accounts. Her pictures stay on this phone.</span></div>
+    <div class="about"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#BFE3FF"/><rect x="14" y="12" width="36" height="40" rx="6" fill="#fff" stroke="#24304F" stroke-width="3" transform="rotate(-6 32 32)"/><path d="M32 20l3.5 7.3 8 1-5.8 5.5 1.5 7.9L32 37.9l-7.2 3.8 1.5-7.9-5.8-5.5 8-1z" fill="#FFD23F" stroke="#24304F" stroke-width="2.4" stroke-linejoin="round"/></svg><span><b>Eloise's Colouring</b> · version 3.2<br>No ads, no links, no accounts. Her pictures stay on this phone.</span></div>
   </div>
 </div>
 
@@ -393,7 +400,7 @@ const calm = matchMedia('(prefers-reduced-motion: reduce)');
 const SKEY = 'eloise2-settings';
 function readJSON(k){ try { const v = JSON.parse(localStorage.getItem(k) || 'null'); return v && typeof v === 'object' ? v : null; } catch(e){ return null; } }
 const stored = readJSON(SKEY) || {};
-const S = Object.assign({name:'Eloise', sound:false, voice:false, vol:'soft', inside:true, hints:true, quick:true, simple:false, stars:0, custom:'', limit:15, rest:30}, stored);
+const S = Object.assign({name:'Eloise', sound:false, voice:false, vol:'soft', inside:true, hints:true, simple:false, stars:0, custom:'', limit:15, rest:30}, stored);
 // Sound and talking start off. Settings saved by the first version had them on, so switch those off once.
 if (stored.v !== 2 && stored.v !== 3){ S.sound = false; S.voice = false; }
 // Colouring time now starts at 15 minutes unless a grown-up has already chosen a limit.
@@ -920,13 +927,13 @@ function say(text, queue){
       g.stroke();
     }
     // 2. scatter fun shapes in the open spaces, never touching a line or each other
-    const bg = g.getImageData(0, 0, PW, PH).data;
+    const BW = g.canvas.width, SCb = BW / PW, bg = g.getImageData(0, 0, BW, g.canvas.height).data;   // the page is drawn larger than its 640 x 720 plan
     const nearLine = (x, y, rr) => {
       for (let dy = -rr; dy <= rr; dy += 3) for (let dx = -rr; dx <= rr; dx += 3){
         if (dx*dx + dy*dy > rr*rr) continue;
         const px = Math.round(x + dx), py = Math.round(y + dy);
         if (px < 0 || py < 0 || px >= PW || py >= PH) continue;
-        if (bg[(py*PW + px)*4] < 128) return true;
+        if (bg[(Math.round(py*SCb)*BW + Math.round(px*SCb))*4] < 128) return true;
       }
       return false;
     };
@@ -959,40 +966,42 @@ function say(text, queue){
 /* ---------- newer pictures ---------- */
 PRESETS.push(
   ['Kiwi', (g, P) => {
-    P.ell(545,100,50,50); P.cloud(150,110,0.85); P.ground(668);
-    g.beginPath(); g.moveTo(275,520); g.lineTo(258,636); g.moveTo(370,520); g.lineTo(386,636);
-    [[258,636],[386,636]].forEach(([x,y]) => { g.moveTo(x,y); g.lineTo(x-34,y+10); g.moveTo(x,y); g.lineTo(x,y+14); g.moveTo(x,y); g.lineTo(x+34,y+10); });
-    g.stroke();
-    P.blob(() => { g.moveTo(122,352); g.quadraticCurveTo(70,430,52,545); g.quadraticCurveTo(96,450,145,382); g.closePath(); });
-    P.ell(345,420,190,145);
-    P.ell(180,330,72,64);
-    P.dot(165,312,11);
-    g.beginPath(); [[300,350],[400,380],[330,450],[440,460],[250,430],[380,520]].forEach(([x,y]) => { g.moveTo(x-16,y-10); g.lineTo(x,y); g.lineTo(x+16,y-10); }); g.stroke();
+    P.ell(545,100,50,50); P.cloud(150,110,0.85); P.ground(690);
+    P.blob(() => g.rect(242,560,44,105)); P.blob(() => g.rect(372,560,44,105));
+    P.ell(262,668,62,24); P.ell(392,668,62,24);
+    P.blob(() => { g.moveTo(125,322); g.quadraticCurveTo(62,400,36,512); g.quadraticCurveTo(104,440,156,372); g.closePath(); });
+    P.ell(340,430,195,160);
+    P.ell(188,328,84,76);
+    P.dot(166,312,13);
+    P.ell(218,362,36,27);
+    g.beginPath(); [[320,360],[420,395],[340,460],[450,480],[270,470],[380,535]].forEach(([x,y]) => { g.moveTo(x-18,y-11); g.lineTo(x,y); g.lineTo(x+18,y-11); }); g.stroke();
   }],
   ['Sheep', (g, P) => {
-    P.ell(550,95,48,48); P.cloud(330,90,0.75); P.ground(690);
-    [[205,470],[285,490],[395,490],[475,470]].forEach(([x,y]) => P.blob(() => g.rect(x-25,y,50,682-y)));
-    P.blob(() => { const cx = 345, cy = 400, rx = 180, ry = 118, n = 14;
+    P.ground(700); P.star(78,105,42); P.star(562,105,42);
+    P.blob(() => g.rect(232,600,66,98)); P.blob(() => g.rect(342,600,66,98));
+    P.blob(() => { const cx = 320, cy = 470, rx = 205, ry = 172, n = 12;
       for (let k = 0; k <= n; k++){ const a = k*2*Math.PI/n, x = cx + Math.cos(a)*rx, y = cy + Math.sin(a)*ry;
-        if (!k){ g.moveTo(x,y); continue; } const m = (k - .5)*2*Math.PI/n; g.quadraticCurveTo(cx + Math.cos(m)*rx*1.25, cy + Math.sin(m)*ry*1.25, x, y); }
+        if (!k){ g.moveTo(x,y); continue; } const m = (k - .5)*2*Math.PI/n; g.quadraticCurveTo(cx + Math.cos(m)*rx*1.22, cy + Math.sin(m)*ry*1.22, x, y); }
       g.closePath(); });
-    P.ell(118,318,36,18,-0.5); P.ell(222,312,36,18,0.5);
-    P.ell(168,370,64,84,-0.25);
-    P.ell(172,292,46,30);
-    P.dot(150,360,10); P.dot(192,355,10);
-    g.beginPath(); g.arc(176,400,20,0.3,Math.PI-0.3); g.stroke();
+    P.ell(203,272,50,25,-0.45); P.ell(437,272,50,25,0.45);
+    P.ell(320,300,102,114);
+    P.ell(268,208,44,38); P.ell(372,208,44,38); P.ell(320,192,52,44);
+    P.dot(284,292,13); P.dot(356,292,13);
+    P.ell(260,338,32,24); P.ell(380,338,32,24);
+    P.ink(() => { g.moveTo(304,332); g.lineTo(336,332); g.lineTo(320,350); g.closePath(); });
+    g.beginPath(); g.moveTo(320,350); g.lineTo(320,366); g.quadraticCurveTo(304,386,288,368); g.moveTo(320,366); g.quadraticCurveTo(336,386,352,368); g.stroke();
   }],
   ['Tūī', (g, P) => {
     P.ell(550,95,48,48); P.cloud(130,95,0.8);
-    P.blob(() => { g.moveTo(400,470); g.lineTo(560,610); g.lineTo(505,650); g.lineTo(365,505); g.closePath(); });
-    P.blob(() => { g.moveTo(20,560); g.quadraticCurveTo(320,515,620,575); g.lineTo(620,612); g.quadraticCurveTo(320,555,20,598); g.closePath(); });
-    P.ell(560,540,52,24,-0.5); P.ell(90,535,52,24,0.45);
-    P.ell(330,410,120,148,-0.45);
-    P.ell(365,425,60,104,-0.5);
-    P.ell(250,268,80,74);
-    P.ink(() => { g.moveTo(180,252); g.lineTo(105,272); g.lineTo(182,288); g.closePath(); });
-    P.dot(232,252,12);
-    P.ell(244,346,46,32);
+    P.blob(() => { g.moveTo(20,560); g.quadraticCurveTo(320,515,620,575); g.lineTo(620,614); g.quadraticCurveTo(320,556,20,600); g.closePath(); });
+    P.ell(96,540,56,26,0.45); P.ell(160,500,46,22,-0.5);
+    P.blob(() => { g.moveTo(405,470); g.lineTo(540,540); g.lineTo(506,606); g.lineTo(372,528); g.closePath(); });
+    P.ell(325,400,125,152,-0.35);
+    P.ell(366,416,62,106,-0.45);
+    P.blob(() => { g.moveTo(178,232); g.lineTo(84,276); g.lineTo(184,304); g.closePath(); });
+    P.ell(248,266,84,78);
+    P.dot(228,250,13);
+    P.ell(252,352,46,31);
   }],
   ['Beach', (g, P) => {
     P.ell(530,105,52,52);
@@ -1001,8 +1010,8 @@ PRESETS.push(
     g.beginPath(); g.moveTo(0,290); g.lineTo(640,290); g.stroke();
     g.beginPath(); g.moveTo(0,380); for (let x = 0; x < 639; x += 640/6) g.quadraticCurveTo(x+640/12,355,x+640/6,380); g.stroke();
     g.beginPath(); g.moveTo(0,470); for (let x = 0; x < 639; x += 80) g.quadraticCurveTo(x+40,445,x+80,470); g.stroke();
-    g.beginPath(); g.moveTo(170,480); g.lineTo(170,395); g.stroke();
-    P.blob(() => { g.moveTo(172,395); g.lineTo(255,420); g.lineTo(172,445); g.closePath(); });
+    g.beginPath(); g.moveTo(170,480); g.lineTo(170,372); g.stroke();
+    P.blob(() => { g.moveTo(172,372); g.lineTo(278,408); g.lineTo(172,444); g.closePath(); });
     P.blob(() => g.rect(70,560,200,110));
     P.blob(() => g.rect(120,480,100,82));
     P.blob(() => { g.moveTo(145,670); g.lineTo(145,625); g.arc(170,625,25,Math.PI,0); g.lineTo(195,670); g.closePath(); });
@@ -1020,24 +1029,26 @@ PRESETS.push(
     P.blob(() => { g.moveTo(320,120); g.lineTo(445,295); g.lineTo(195,295); g.closePath(); });
     P.star(320,92,46);
     [[230,510],[410,505],[320,470],[245,390],[395,385],[320,250]].forEach(([x,y]) => P.ell(x,y,26,26));
-    P.blob(() => g.rect(80,600,130,90)); P.blob(() => g.rect(440,615,120,75));
-    g.beginPath(); g.moveTo(145,600); g.lineTo(145,690); g.moveTo(500,615); g.lineTo(500,690); g.stroke();
-    P.ell(125,592,24,14); P.ell(165,592,24,14); P.ell(480,607,22,13); P.ell(520,607,22,13);
+    P.blob(() => g.rect(70,590,150,100)); P.blob(() => g.rect(430,600,140,90));
+    g.beginPath(); g.moveTo(145,590); g.lineTo(145,690); g.moveTo(70,640); g.lineTo(220,640); g.moveTo(500,600); g.lineTo(500,690); g.moveTo(430,645); g.lineTo(570,645); g.stroke();
     P.star(70,120,38); P.star(570,130,38);
   }],
   ['Pavlova', (g, P) => {
-    P.star(80,100,42); P.star(560,110,40);
-    P.ell(320,610,270,50);
-    const base = () => { g.beginPath(); g.moveTo(110,430); g.lineTo(110,565); g.quadraticCurveTo(320,640,530,565); g.lineTo(530,430); g.closePath(); };
+    P.star(80,110,42); P.star(560,110,42);
+    P.ell(320,628,275,46);
+    const base = () => { g.beginPath(); g.moveTo(122,592); g.quadraticCurveTo(100,470,150,442); g.lineTo(490,442); g.quadraticCurveTo(540,470,518,592); g.quadraticCurveTo(320,640,122,592); g.closePath(); };
     base(); g.fill(); g.save(); g.clip();
-    g.beginPath(); [190,270,370,450].forEach(x => { g.moveTo(x,430); g.quadraticCurveTo(x+12,520,x,640); }); g.stroke();
+    g.beginPath(); g.moveTo(90,530); for (let x = 90; x < 550; x += 92) g.quadraticCurveTo(x+46,505,x+92,530); g.stroke();
     g.restore(); base(); g.stroke();
-    P.blob(() => { g.moveTo(96,440); for (let k = 0; k < 5; k++){ const x = 96 + k*89.6; g.quadraticCurveTo(x+44.8,360,x+89.6, k === 4 ? 440 : 425); } g.quadraticCurveTo(320,505,96,440); g.closePath(); });
-    [[203,345,56],[430,350,54]].forEach(([x,y,r]) => { P.ell(x,y,r,r); P.ell(x,y,r*.5,r*.5); for (let k = 0; k < 8; k++){ const a = k*Math.PI/4; P.dot(x + Math.cos(a)*r*.76, y + Math.sin(a)*r*.76, 4.5); } });
-    P.blob(() => { g.moveTo(272,315); g.quadraticCurveTo(315,262,358,315); g.quadraticCurveTo(352,372,315,392); g.quadraticCurveTo(278,372,272,315); g.closePath(); });
-    P.ink(() => { g.moveTo(288,300); g.lineTo(315,276); g.lineTo(342,300); g.lineTo(315,312); g.closePath(); });
+    P.blob(() => { g.moveTo(130,447); for (let k = 0; k < 4; k++){ const x = 130 + k*95; g.quadraticCurveTo(x+47.5,372,x+95,447); } for (let k = 4; k > 0; k--){ const x = 130 + k*95; g.quadraticCurveTo(x-47.5,505,x-95,447); } g.closePath(); });
+    [195,445].forEach(x => {
+      P.blob(() => { g.moveTo(x-52,328); g.quadraticCurveTo(x,270,x+52,328); g.quadraticCurveTo(x+46,396,x,424); g.quadraticCurveTo(x-46,396,x-52,328); g.closePath(); });
+      P.ink(() => { g.moveTo(x-30,312); g.lineTo(x,288); g.lineTo(x+30,312); g.lineTo(x,322); g.closePath(); });
+      [[-18,350],[16,345],[0,380]].forEach(([dx,y]) => P.dot(x+dx,y,4.5));
+    });
+    P.ell(320,338,64,64); P.ell(320,338,30,30);
+    for (let k = 0; k < 8; k++){ const a = k*Math.PI/4; P.dot(320 + Math.cos(a)*47, 338 + Math.sin(a)*47, 5); }
   }],
-
   ['Flower', (g, P) => {
     P.star(80,90,40); P.ell(560,95,48,48); P.ground(700);
     g.beginPath(); g.moveTo(320,480); g.lineTo(320,320); g.stroke();
@@ -1246,12 +1257,12 @@ toolBtns.forEach(b => b.onclick = () => setTool(b.dataset.tool, true));
 
 /* ---------- page setup ---------- */
 let linesURL = null;
-function setup(w, h, m){
+function setup(w, h, m, A){
   W = w; H = h; mask = m;
   [cv, paint, lines, before, strokeC, comp, clipC, stk, stkBefore].forEach(c => { c.width = W; c.height = H; });
   pctx.fillStyle = '#fff'; pctx.fillRect(0,0,W,H);
   const img = lctx.createImageData(W, H), d = img.data;
-  for (let p = 0; p < W*H; p++) if (mask[p]) { const i = p*4; d[i]=INK[0]; d[i+1]=INK[1]; d[i+2]=INK[2]; d[i+3]=255; }
+  for (let p = 0; p < W*H; p++){ const al = A ? A[p] : mask[p] ? 255 : 0; if (al){ const i = p*4; d[i]=INK[0]; d[i+1]=INK[1]; d[i+2]=INK[2]; d[i+3]=al; } }
   lctx.putImageData(img, 0, 0);
   history = []; linesURL = null; celebrated = false; dirty = false; syncUndo();
   labelRegions(); render(); fit(); $('nextBtn').hidden = true; if (typeof stopAlive === 'function') stopAlive();
@@ -1276,7 +1287,7 @@ function splash(x, y, bb){
 function fit(){
   if (!W || view !== 'paint') return;
   const r = stage.getBoundingClientRect();
-  const s = Math.min((r.width - 24) / W, (r.height - 24) / H);
+  const s = Math.min((r.width - 6) / W, (r.height - 24) / H);
   if (s <= 0) return;
   cv.style.width = Math.floor(W*s) + 'px'; cv.style.height = Math.floor(H*s) + 'px';
 }
@@ -1284,22 +1295,24 @@ addEventListener('resize', fit);
 try { new ResizeObserver(fit).observe(stage); } catch(e){}
 
 /* ---------- pictures ---------- */
+/* Pictures are planned on a 640 x 720 page and drawn 1.5x larger with smooth edges, so the lines stay crisp on a phone screen. */
+const SC = 1.5, RW = PW * SC, RH = PH * SC;
 function drawPreset(fn){
-  const c = mk(); c.width = PW; c.height = PH;
-  const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0,0,PW,PH);
-  fn(g, pen(g));
+  const c = mk(); c.width = RW; c.height = RH;
+  const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0,0,RW,RH);
+  g.save(); g.scale(SC, SC); fn(g, pen(g)); g.restore();
   // any space too small for a little finger is filled in with ink
-  const im = g.getImageData(0,0,PW,PH), d = im.data, N = PW*PH, seen = new Uint8Array(N), stack = new Int32Array(N), min = Math.pow(0.06 * Math.min(PW, PH), 2), list = new Int32Array(Math.ceil(min) + 1);
+  const im = g.getImageData(0,0,RW,RH), d = im.data, N = RW*RH, seen = new Uint8Array(N), stack = new Int32Array(N), min = Math.pow(0.06 * Math.min(RW, RH), 2), list = new Int32Array(Math.ceil(min) + 1);
   for (let s0 = 0; s0 < N; s0++){
     if (seen[s0] || d[s0*4] < 128) continue;
     let sp = 0, n = 0, ln = 0; stack[sp++] = s0; seen[s0] = 1;
     while (sp){
       const p = stack[--sp]; n++; if (ln < min) list[ln++] = p;
-      const x = p % PW;
+      const x = p % RW;
       if (x > 0 && !seen[p-1] && d[(p-1)*4] >= 128){ seen[p-1] = 1; stack[sp++] = p-1; }
-      if (x < PW-1 && !seen[p+1] && d[(p+1)*4] >= 128){ seen[p+1] = 1; stack[sp++] = p+1; }
-      if (p >= PW && !seen[p-PW] && d[(p-PW)*4] >= 128){ seen[p-PW] = 1; stack[sp++] = p-PW; }
-      if (p < N-PW && !seen[p+PW] && d[(p+PW)*4] >= 128){ seen[p+PW] = 1; stack[sp++] = p+PW; }
+      if (x < RW-1 && !seen[p+1] && d[(p+1)*4] >= 128){ seen[p+1] = 1; stack[sp++] = p+1; }
+      if (p >= RW && !seen[p-RW] && d[(p-RW)*4] >= 128){ seen[p-RW] = 1; stack[sp++] = p-RW; }
+      if (p < N-RW && !seen[p+RW] && d[(p+RW)*4] >= 128){ seen[p+RW] = 1; stack[sp++] = p+RW; }
     }
     if (n < min) for (let q = 0; q < ln; q++){ const i = list[q]*4; d[i] = d[i+1] = d[i+2] = 0; }
   }
@@ -1310,10 +1323,15 @@ let openTok = 0;
 function loadDrawing(fn, name, blank){
   saveNow(); openTok++;
   let m;
-  if (blank) m = new Uint8Array(PW*PH);
-  else { const d = drawPreset(fn).getContext('2d').getImageData(0,0,PW,PH).data; m = new Uint8Array(PW*PH); for (let p = 0; p < PW*PH; p++) m[p] = d[p*4] < 128 ? 1 : 0; }
+  let A = null;
+  if (blank) m = new Uint8Array(RW*RH);
+  else {
+    // m marks solid line pixels; A keeps the soft edge of each line so it is drawn smoothly over the paint
+    const d = drawPreset(fn).getContext('2d').getImageData(0,0,RW,RH).data; m = new Uint8Array(RW*RH); A = new Uint8ClampedArray(RW*RH);
+    for (let p = 0; p < RW*RH; p++){ const l = d[p*4]; m[p] = l < 128 ? 1 : 0; A[p] = l < 128 ? 255 : (255 - l) * 2; }
+  }
   cur = {id:null, name, blank:!!blank, cat:cur.cat};
-  setup(PW, PH, m); updateMeter();
+  setup(RW, RH, m, A); updateMeter();
 }
 function openPreset(name){
   const i = BYNAME.get(name); if (i == null) return;
@@ -1393,8 +1411,7 @@ const isDone = r => colCount[r] >= regionSize[r] * 0.5;
 function progress(){
   counts(); let n = 0, done = 0;
   for (let r = 0; r < regionSize.length; r++){ if (regionSize[r] < minArea) continue; n++; if (isDone(r)) done++; }
-  const need = S.quick ? Math.max(1, Math.ceil(n * .8)) : n;   // quick finish: most spaces is enough
-  return n ? Math.min(1, done / need) : 0;
+  return n ? done / n : 0;
 }
 function allColoured(){ return progress() >= 1; }
 function updateMeter(){
@@ -1413,7 +1430,7 @@ function nextPaint(){
 }
 function nearestFree(x, y){
   const s = y*W + x; if (!mask[s]) return s;
-  for (let r = 1; r <= 14; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++){
+  for (let r = 1, R = Math.round(14 * W / 640); r <= R; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++){
     if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
     const xx = x + dx, yy = y + dy; if (xx < 0 || yy < 0 || xx >= W || yy >= H) continue;
     if (!mask[yy*W + xx]) return yy*W + xx;
@@ -1511,7 +1528,7 @@ function strokeStyle(){
   return paintSel.hex;
 }
 function segment(x, y){
-  const lw = BRUSH[size] * (tool === 'eraser' ? 1.25 : 1);
+  const lw = BRUSH[size] * (W / 640) * (tool === 'eraser' ? 1.25 : 1);
   stc.lineCap = 'round'; stc.lineJoin = 'round'; stc.lineWidth = lw; stc.strokeStyle = strokeStyle();
   stc.beginPath(); stc.moveTo(last[0], last[1]); stc.lineTo(x, y); stc.stroke();
   if (tool === 'wand'){
@@ -1547,7 +1564,7 @@ function endStroke(e){
 
 /* stickers */
 function placeStamp(x, y, e){
-  const rot = (Math.random() - .5) * .6, Sz = STICK[size];
+  const rot = (Math.random() - .5) * .6, Sz = STICK[size] * W / 640;
   render();
   const R = Math.ceil(Sz * 1.8), bx = Math.max(0, x - R), by = Math.max(0, y - R), bw = Math.min(W, x + R) - bx, bh = Math.min(H, y + R) - by;
   pushHist([{layer:'s', x:bx, y:by, img:sctx.getImageData(bx, by, bw, bh)}]);
@@ -1671,9 +1688,10 @@ function openSaved(id){
     const c = mk(); c.width = rec.w; c.height = rec.h;
     const g = c.getContext('2d'); g.drawImage(li,0,0);
     const d = g.getImageData(0,0,rec.w,rec.h).data, m = new Uint8Array(rec.w*rec.h);
-    for (let p = 0; p < rec.w*rec.h; p++) m[p] = d[p*4+3] > 128 ? 1 : 0;
+    const A = new Uint8ClampedArray(rec.w*rec.h);
+    for (let p = 0; p < rec.w*rec.h; p++){ const al = d[p*4+3]; A[p] = al; m[p] = al >= 250 ? 1 : 0; }
     cur = {id, name: typeof rec.name === 'string' ? rec.name : '', blank: !!rec.blank, cat: CATS[rec.cat] ? rec.cat : 'mine'};
-    setup(rec.w, rec.h, m); pctx.drawImage(pi,0,0); if (si && si.naturalWidth) sctx.drawImage(si,0,0);
+    setup(rec.w, rec.h, m, A); pctx.drawImage(pi,0,0); if (si && si.naturalWidth) sctx.drawImage(si,0,0);
     colOK = false; linesURL = rec.lines; render();
     celebrated = !cur.blank && allColoured(); updateMeter(); if (cur.blank) setTool('crayon', false); userActed();
   };
@@ -1704,8 +1722,9 @@ function nextThumb(){
   const t = thumbQueue.shift(); if (!t){ thumbBusy = false; return; }
   const [name, img] = t;
   if (!thumbCache.has(name)){
-    const src = drawPreset(PRESETS[BYNAME.get(name)][1]), sm = mk(); sm.width = 256; sm.height = 288;
-    const g = sm.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(src, 0, 0, 256, 288);
+    const src = drawPreset(PRESETS[BYNAME.get(name)][1]), sm = mk(); sm.width = 384; sm.height = 432;
+    const g = sm.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(src, 0, 0, 384, 432);
+    g.globalCompositeOperation = 'lighten'; g.fillStyle = 'rgb(' + INK + ')'; g.fillRect(0, 0, 384, 432);   // black lines become ink navy
     thumbCache.set(name, sm.toDataURL());
   }
   img.src = thumbCache.get(name);
@@ -1740,7 +1759,7 @@ function renderHome(){
       return;
     }
     idx.forEach(({id, thumb, done}) => {
-      const b = card('My picture', () => openSaved(id));
+      const b = card('My picture', () => openSaved(id)); b.classList.add('mine');
       const img = new Image(); img.alt = ''; img.src = thumb; b.appendChild(img);
       if (done) b.insertAdjacentHTML('beforeend', STAR_SVG);
       grid.appendChild(b);
@@ -1822,7 +1841,7 @@ function openParent(){
   if (!S.tipSeen){ S.tipSeen = true; saveSettings(); $('tip').hidden = true; }
   saveNow(); clearTimeout(idleT); hand.hidden = true;
   $('pName').value = S.name; $('pSound').checked = S.sound; $('pVoice').checked = S.voice; $('pInside').checked = S.inside; $('pHints').checked = S.hints;
-  $('pQuick').checked = S.quick; $('pSimple').checked = S.simple; $('pVol').value = S.vol; $('pRest').value = String(S.rest);
+  $('pSimple').checked = S.simple; $('pVol').value = S.vol; $('pRest').value = String(S.rest);
   if (S.custom) $('pCustom').value = S.custom;
   $('pSave').hidden = !(view === 'paint' && W && (downloads || !inViewer));
   $('pFull').hidden = !(document.fullscreenEnabled && document.documentElement.requestFullscreen);
@@ -1835,12 +1854,11 @@ function closeParent(){ $('parent').hidden = true; if (view === 'home') renderHo
 $('pClose').onclick = closeParent;
 $('parent').addEventListener('click', e => { if (e.target === $('parent')) closeParent(); });
 $('pName').addEventListener('input', () => { const v = $('pName').value.trim(); S.name = v || 'Eloise'; saveSettings(); renderTitle(); });
-[['pSound','sound'],['pVoice','voice'],['pInside','inside'],['pHints','hints'],['pQuick','quick'],['pSimple','simple']].forEach(([id, k]) => $(id).addEventListener('change', () => {
+[['pSound','sound'],['pVoice','voice'],['pInside','inside'],['pHints','hints'],['pSimple','simple']].forEach(([id, k]) => $(id).addEventListener('change', () => {
   S[k] = $(id).checked; saveSettings();
   if (k === 'voice' && S.voice) say('Hello ' + S.name + '!');
   if (k === 'sound' && S.sound) SFX.pick(4);
   if (k === 'simple') applySimple();
-  if (k === 'quick' && W){ celebrated = !cur.blank && allColoured(); if (!celebrated) $('nextBtn').hidden = true; updateMeter(); }
 }));
 $('pVol').addEventListener('change', () => { S.vol = $('pVol').value === 'normal' ? 'normal' : 'soft'; saveSettings(); if (S.sound) SFX.pick(4); else if (S.voice) say('Hello ' + S.name + '!'); });
 $('pRest').addEventListener('change', () => { S.rest = +$('pRest').value || 0; saveSettings(); usedText(); });
@@ -1940,6 +1958,11 @@ const MOVES = {
   launch: {d:3400, e:'linear', k:[{transform:N_},{transform:'translateX(-1%)',offset:.05},{transform:'translateX(1%)',offset:.1},{transform:'translateX(-1%)',offset:.15},{transform:'translateX(1%)',offset:.2},{transform:N_,offset:.25,easing:'ease-in'},{transform:'translateY(-150%)',offset:.55,easing:'step-end'},{transform:'translateY(150%)',offset:.62,easing:'ease-out'},{transform:N_,offset:1}]}
 };
 const pic = $('pic'), fx = $('fx'), fxc = fx.getContext('2d');
+(() => { // a faint paper grain, so flat colour looks like it is on paper rather than glass
+  const c = mk(); c.width = c.height = 160; const g = c.getContext('2d'), im = g.createImageData(160, 160), R = rng(42);
+  for (let p = 0; p < 160*160; p++){ const v = 232 + R() * 23; im.data[p*4] = im.data[p*4+1] = im.data[p*4+2] = v; im.data[p*4+3] = 255; }
+  g.putImageData(im, 0, 0); pic.style.setProperty('--grain', 'url(' + c.toDataURL() + ')');
+})();
 let aliveAnim = null, fxRaf = 0;
 function comeAlive(){
   if (view !== 'paint' || !W) return;
@@ -1961,7 +1984,7 @@ function runFx(kind, at, dir){
   cancelAnimationFrame(fxRaf);
   const r = cv.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
   fx.width = Math.max(1, Math.round(r.width * dpr)); fx.height = Math.max(1, Math.round(r.height * dpr));
-  const k = fx.width / W, R = Math.random, parts = [], t0 = performance.now();
+  const k = fx.width / PW, R = Math.random, parts = [], t0 = performance.now();
   let made = 0;
   const grav = {stars:.05, flowers:.06, splash:.22}[kind] || 0;
   const spawn = () => {
@@ -2039,6 +2062,7 @@ function cleanMask(m, w, h){
    Patches too small to colour are merged into their neighbours, and the edges
    between shades become the outlines, so every space is closed and finger-sized. */
 function photoMask(img){
+  const PW = RW, PH = RH;
   const LW = 160, LH = 180, N = LW*LH, K = 4;
   const c = mk(); c.width = LW; c.height = LH; const g = c.getContext('2d');
   g.fillStyle = '#fff'; g.fillRect(0,0,LW,LH);
@@ -2090,7 +2114,7 @@ function photoMask(img){
   }
   let m = new Uint8Array(PW*PH);
   for (let y = 0; y < PH; y++) for (let x = 0; x < PW; x++){ const p = y*PW + x, v = out[p]; if ((x < PW-1 && out[p+1] !== v) || (y < PH-1 && out[p+PW] !== v)) m[p] = 1; }
-  for (let it = 0; it < 3; it++){
+  for (let it = 0; it < 5; it++){
     const n2 = m.slice();
     for (let p = 0; p < PW*PH; p++){ if (!m[p]) continue; const x = p % PW; if (x > 0) n2[p-1] = 1; if (x < PW-1) n2[p+1] = 1; if (p >= PW) n2[p-PW] = 1; if (p < PW*PH-PW) n2[p+PW] = 1; }
     m = n2;
@@ -2104,12 +2128,14 @@ function photoMask(img){
   const sd = sg.getImageData(0,0,PW,PH).data;
   for (let p = 0; p < PW*PH; p++) m[p] = sd[p*4+3] > 110 ? 1 : 0;
   cleanMask(m, PW, PH);
-  return m;
+  const A = new Uint8ClampedArray(PW*PH);
+  for (let p = 0; p < PW*PH; p++) A[p] = m[p] ? 255 : Math.min(254, sd[p*4+3] * 2.3);
+  return {m, A};
 }
 function photoPage(img){
-  const m = photoMask(img);
+  const PW = RW, PH = RH, {A} = photoMask(img);
   const lc = mk(); lc.width = PW; lc.height = PH; const lg = lc.getContext('2d'), im = lg.createImageData(PW, PH), d = im.data;
-  for (let p = 0; p < PW*PH; p++) if (m[p]){ const i = p*4; d[i] = INK[0]; d[i+1] = INK[1]; d[i+2] = INK[2]; d[i+3] = 255; }
+  for (let p = 0; p < PW*PH; p++) if (A[p]){ const i = p*4; d[i] = INK[0]; d[i+1] = INK[1]; d[i+2] = INK[2]; d[i+3] = A[p]; }
   lg.putImageData(im, 0, 0);
   const pc = mk(); pc.width = PW; pc.height = PH; const pg = pc.getContext('2d'); pg.fillStyle = '#fff'; pg.fillRect(0,0,PW,PH);
   const tc = mk(); tc.width = 213; tc.height = 240; const tg = tc.getContext('2d'); tg.fillStyle = '#fff'; tg.fillRect(0,0,213,240); tg.drawImage(lc, 0, 0, 213, 240);

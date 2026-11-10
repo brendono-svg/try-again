@@ -2,7 +2,7 @@
 
 A colouring app for a three-year-old, made to run on a phone. It's a single self-contained `index.html` with no installs and no internet needed after it loads (only the Fredoka font is fetched from Google Fonts).
 
-This is version 3.1, a rebuild of the earlier "Eloise's App". The 34 original pictures, the magic paints and the stickers carry over. Ten new pictures are added: Flower, Sun, Boat, Hot air balloon, plus a Kiwi, Sheep, Tūī, Beach, Pavlova and Christmas tree.
+This is version 3.2, a rebuild of the earlier "Eloise's App". The 34 original pictures, the magic paints and the stickers carry over. Ten new pictures are added: Flower, Sun, Boat, Hot air balloon, plus a Kiwi, Sheep, Tūī, Beach, Pavlova and Christmas tree.
 
 ## What's new for Eloise
 - **Home screen of big picture cards**, sorted into Animals, Party, Go!, Outside and Mine. There's also a **Surprise!** card (a new random picture each time) and a **blank page** for free drawing.
@@ -16,13 +16,18 @@ This is version 3.1, a rebuild of the earlier "Eloise's App". The 34 original pi
 - **Pictures come to life.** When she finishes, the picture moves in its own way and makes its own sound: the cat hops and says "Meow!" with floating hearts, the car drives off and comes back puffing smoke, the rocket blasts off, and the fish swims with bubbles. Tapping the twirling star on the progress bar plays it again.
 - Clearing the picture needs a press-and-hold, and Undo can bring it back.
 
+## Look and feel
+- Pictures are drawn at 960 x 1080 with smooth line edges, so the outlines stay crisp on a phone screen.
+- The colouring page fills more of the screen and has a faint paper grain.
+- Picture cards on the home screen sit on soft colour, with navy line art.
+- A picture is finished only when every space is coloured.
+
 ## For grown-ups
 Press and hold the gear for 1.5 seconds, then tap the three numbers it spells out in words (for example "eight, six, two"). A child who can't read can't get in, one wrong tap closes it, and it closes by itself after 20 seconds.
 
 - **Colouring time.** Each turn lasts 15 minutes by default (5 to 45 minutes, or no limit). She gets a "One more minute!" warning, then a sleepy moon screen. The next turn starts after a 30-minute, 1-hour or 2-hour break, or only when you start it.
 - **Sound.** Sounds and talking are separate switches, and both start off. Loudness is Soft by default.
 - **Making it easier.**
-  - Quick finish (on by default): a picture counts as finished when most of its spaces are coloured.
   - Simple tools: shows only the paint bucket, crayon and stickers.
   - Stay inside the lines, and the helping hand.
   - One special colour of your own.
